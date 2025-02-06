@@ -189,7 +189,7 @@ TEST(HotRestart, InitializeFromExistingState) {
   VmecConstants constants;
   constants.reset();
 
-  p.evalRadialProfiles(fc.haveToFlipTheta, thread_id, constants);
+  p.evalRadialProfiles(fc.haveToFlipTheta, constants);
 
   // Now that all contributions to lamscale have been accumulated in
   // VmecConstants::rmsPhiP, can update lamscale.
