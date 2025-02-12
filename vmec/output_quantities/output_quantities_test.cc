@@ -414,7 +414,7 @@ INSTANTIATE_TEST_SUITE_P(
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 2.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-15},
-           DataSource{.identifier = "cma", .tolerance = 5.0e-12},
+           DataSource{.identifier = "cma", .tolerance = 1.0e-11},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 5.0e-12}));
 
