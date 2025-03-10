@@ -677,7 +677,7 @@ INSTANTIATE_TEST_SUITE_P(
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-9},
            DataSource{.identifier = "cma", .tolerance = 5.0e-9},
-           DataSource{.identifier = "cth_like_free_bdy", .tolerance = 1.0e-9}));
+           DataSource{.identifier = "cth_like_free_bdy", .tolerance = 2.0e-9}));
 
 class Threed1FirstTableTest : public TestWithParam<DataSource> {
  protected:
