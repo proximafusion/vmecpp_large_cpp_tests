@@ -7,7 +7,7 @@ In order to run these tests, clone them inside the VMEC++ repo:
 
 ```
 # skip if you have vmecpp already cloned
-git clone --recurse-submodules git@github.com:proximafusion/vmecpp
+git clone git@github.com:proximafusion/vmecpp
 cd vmecpp/src/vmecpp/cpp
 git clone git@github.com:proximafusion/vmecpp_large_cpp_tests
 
