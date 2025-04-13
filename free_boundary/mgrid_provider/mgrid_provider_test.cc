@@ -78,7 +78,7 @@ TEST_P(LoadMGridTest, CheckLoadMGrid) {
   mgrid_file.close();
 
   MGridProvider mgrid;
-  mgrid.loadFromMGrid(vmec_indata->mgrid_file, vmec_indata->extcur);
+  mgrid.LoadFile(vmec_indata->mgrid_file, vmec_indata->extcur);
 
   // The reference calculation for comparison is done using
   // //magnetics/magnetic_field_provider (which internally uses ABSCAB).
