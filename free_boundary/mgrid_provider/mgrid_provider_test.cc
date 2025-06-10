@@ -22,6 +22,7 @@
 #include "util/testing/numerical_comparison_lib.h"
 #include "vmecpp/common/magnetic_configuration_lib/magnetic_configuration_lib.h"
 #include "vmecpp/common/magnetic_field_provider/magnetic_field_provider_lib.h"
+
 #include "vmecpp/common/util/util.h"
 
 namespace {
@@ -78,7 +79,8 @@ TEST_P(LoadMGridTest, CheckLoadMGrid) {
   mgrid_file.close();
 
   MGridProvider mgrid;
-  mgrid.LoadFile(vmec_indata->mgrid_file, vmec_indata->extcur);
+  absl::Status load_status = mgrid.LoadFile(vmec_indata->mgrid_file, vmec_indata->extcur);
+  ASSERT_TRUE(load_status.ok()) << load_status;
 
   // The reference calculation for comparison is done using
   // //magnetics/magnetic_field_provider (which internally uses ABSCAB).
