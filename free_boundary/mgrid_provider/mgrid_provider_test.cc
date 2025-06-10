@@ -22,7 +22,6 @@
 #include "util/testing/numerical_comparison_lib.h"
 #include "vmecpp/common/magnetic_configuration_lib/magnetic_configuration_lib.h"
 #include "vmecpp/common/magnetic_field_provider/magnetic_field_provider_lib.h"
-
 #include "vmecpp/common/util/util.h"
 
 namespace {
