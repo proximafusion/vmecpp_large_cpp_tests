@@ -7,6 +7,7 @@
 #include <string>
 
 #include "vmecpp/vmec/vmec_constants/vmec_constants.h"
+#include "vmecpp/vmec/vmec_constants/vmec_algorithm_constants.h"
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -30,6 +31,9 @@ using nlohmann::json;
 
 using file_io::ReadFile;
 using testing::IsCloseRelAbs;
+
+using vmecpp::vmec_algorithm_constants::kEvenParity;
+using vmecpp::vmec_algorithm_constants::kOddParity;
 
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -123,11 +127,11 @@ TEST(TestRadialProfiles, CheckSolovevSingleThreaded) {
         if (m % 2 == 0) {  // m is even
           EXPECT_TRUE(IsCloseRelAbs(
               profil3d["scalxc"][jF][n][m],
-              p.scalxc[(jF - vmec.r_[0]->nsMinF1) * 2 + m_evn], tolerance));
+              p.scalxc[(jF - vmec.r_[0]->nsMinF1) * 2 + kEvenParity], tolerance));
         } else {  // m is odd
           EXPECT_TRUE(IsCloseRelAbs(
               profil3d["scalxc"][jF][n][m],
-              p.scalxc[(jF - vmec.r_[0]->nsMinF1) * 2 + m_odd], tolerance));
+              p.scalxc[(jF - vmec.r_[0]->nsMinF1) * 2 + kOddParity], tolerance));
         }
       }  // m
     }    // n
@@ -245,12 +249,12 @@ TEST_P(RadialProfilesTest, CheckRadialProfiles) {
           if (m % 2 == 0) {
             // m is even
             EXPECT_TRUE(IsCloseRelAbs(profil3d["scalxc"][jF][n][m],
-                                      p.scalxc[(jF - nsMinF1) * 2 + m_evn],
+                                      p.scalxc[(jF - nsMinF1) * 2 + kEvenParity],
                                       tolerance));
           } else {
             // m is odd
             EXPECT_TRUE(IsCloseRelAbs(profil3d["scalxc"][jF][n][m],
-                                      p.scalxc[(jF - nsMinF1) * 2 + m_odd],
+                                      p.scalxc[(jF - nsMinF1) * 2 + kOddParity],
                                       tolerance));
           }
         }  // m

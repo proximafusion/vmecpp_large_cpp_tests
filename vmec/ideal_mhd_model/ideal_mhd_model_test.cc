@@ -20,7 +20,11 @@
 #include "util/file_io/file_io.h"
 #include "util/testing/numerical_comparison_lib.h"
 #include "vmecpp/common/util/util.h"
+#include "vmecpp/vmec/vmec_constants/vmec_algorithm_constants.h"
 #include "vmecpp/vmec/vmec/vmec.h"
+
+using vmecpp::vmec_algorithm_constants::kEvenParity;
+using vmecpp::vmec_algorithm_constants::kOddParity;
 
 namespace {
 using nlohmann::json;
@@ -239,53 +243,53 @@ TEST_P(InverseFourierTransformGeometryTest,
           for (int l = 0; l < s.nThetaEff; ++l) {
             int idx_kl = ((jF - nsMinF1) * s.nZeta + k) * s.nThetaEff + l;
 
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->r1_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->r1_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->ru_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->ru_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->z1_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->z1_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->zu_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->zu_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->lu_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->lu_o[idx_kl],
                                       tolerance));
             if (s.lthreed) {
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][m_evn][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][kEvenParity][k][l],
                                         vmec.m_[thread_id]->rv_e[idx_kl],
                                         tolerance));
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][m_odd][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][kOddParity][k][l],
                                         vmec.m_[thread_id]->rv_o[idx_kl],
                                         tolerance));
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][m_evn][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][kEvenParity][k][l],
                                         vmec.m_[thread_id]->zv_e[idx_kl],
                                         tolerance));
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][m_odd][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][kOddParity][k][l],
                                         vmec.m_[thread_id]->zv_o[idx_kl],
                                         tolerance));
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][m_evn][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][kEvenParity][k][l],
                                         vmec.m_[thread_id]->lv_e[idx_kl],
                                         tolerance));
-              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][m_odd][k][l],
+              EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][kOddParity][k][l],
                                         vmec.m_[thread_id]->lv_o[idx_kl],
                                         tolerance));
             }  // lthreed
@@ -307,16 +311,16 @@ TEST_P(InverseFourierTransformGeometryTest,
               // even-m and odd-m contributions in order to compute the required
               // reference quantities.
               const double expected_rcon_even =
-                  funct3d_geometry["rcon"][jF][m_evn][k][l];
+                  funct3d_geometry["rcon"][jF][kEvenParity][k][l];
               const double expected_rcon_odd =
-                  funct3d_geometry["rcon"][jF][m_odd][k][l];
+                  funct3d_geometry["rcon"][jF][kOddParity][k][l];
               const double expected_rcon =
                   expected_rcon_even + sqrtSF * expected_rcon_odd;
 
               const double expected_zcon_even =
-                  funct3d_geometry["zcon"][jF][m_evn][k][l];
+                  funct3d_geometry["zcon"][jF][kEvenParity][k][l];
               const double expected_zcon_odd =
-                  funct3d_geometry["zcon"][jF][m_odd][k][l];
+                  funct3d_geometry["zcon"][jF][kOddParity][k][l];
               const double expected_zcon =
                   expected_zcon_even + sqrtSF * expected_zcon_odd;
 
@@ -1192,58 +1196,58 @@ TEST_P(UpdateRadialPreconditionerTest, CheckUpdateRadialPreconditioner) {
       // now check the preconditioner for R and Z
       for (int jH = nsMinH; jH < nsMaxH; ++jH) {
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["arm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            precondn["arm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["arm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            precondn["arm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["azm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            precondn["azm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["azm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            precondn["azm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["brm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            precondn["brm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["brm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            precondn["brm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["bzm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            precondn["bzm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["bzm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            precondn["bzm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + kOddParity], tolerance));
       }  // jH
 
       for (int jF = nsMinF; jF < nsMaxF; ++jF) {
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["ard"][jF][m_evn],
-            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + m_evn], tolerance));
+            precondn["ard"][jF][kEvenParity],
+            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["ard"][jF][m_odd],
-            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + m_odd], tolerance));
+            precondn["ard"][jF][kOddParity],
+            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["azd"][jF][m_evn],
-            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            precondn["azd"][jF][kEvenParity],
+            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["azd"][jF][m_odd],
-            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            precondn["azd"][jF][kOddParity],
+            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["brd"][jF][m_evn],
-            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            precondn["brd"][jF][kEvenParity],
+            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["brd"][jF][m_odd],
-            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            precondn["brd"][jF][kOddParity],
+            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["bzd"][jF][m_evn],
-            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            precondn["bzd"][jF][kEvenParity],
+            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            precondn["bzd"][jF][m_odd],
-            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            precondn["bzd"][jF][kOddParity],
+            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(precondn["crd"][jF],
                                   vmec.m_[thread_id]->cxd[jF - nsMinF],
@@ -2236,58 +2240,58 @@ TEST_P(ApplyPreconditionerTest, CheckApplyPreconditioner) {
       // check preconditioner matrix elements again, just to be sure...
       for (int jH = nsMinH; jH < nsMaxH; ++jH) {
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["arm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            scalfor_out["arm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["arm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            scalfor_out["arm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->arm[(jH - nsMinH) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["azm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            scalfor_out["azm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["azm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            scalfor_out["azm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->azm[(jH - nsMinH) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["brm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            scalfor_out["brm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["brm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            scalfor_out["brm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->brm[(jH - nsMinH) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["bzm"][jH + 1][m_evn],
-            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + m_evn], tolerance));
+            scalfor_out["bzm"][jH + 1][kEvenParity],
+            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["bzm"][jH + 1][m_odd],
-            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + m_odd], tolerance));
+            scalfor_out["bzm"][jH + 1][kOddParity],
+            vmec.m_[thread_id]->bzm[(jH - nsMinH) * 2 + kOddParity], tolerance));
       }  // jH
 
       for (int jF = nsMinF; jF < nsMaxF; ++jF) {
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["ard"][jF][m_evn],
-            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + m_evn], tolerance));
+            scalfor_out["ard"][jF][kEvenParity],
+            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["ard"][jF][m_odd],
-            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + m_odd], tolerance));
+            scalfor_out["ard"][jF][kOddParity],
+            vmec.m_[thread_id]->ard[(jF - nsMinF) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["azd"][jF][m_evn],
-            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            scalfor_out["azd"][jF][kEvenParity],
+            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["azd"][jF][m_odd],
-            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            scalfor_out["azd"][jF][kOddParity],
+            vmec.m_[thread_id]->azd[(jF - nsMinF) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["brd"][jF][m_evn],
-            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            scalfor_out["brd"][jF][kEvenParity],
+            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["brd"][jF][m_odd],
-            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            scalfor_out["brd"][jF][kOddParity],
+            vmec.m_[thread_id]->brd[(jF - nsMinF) * 2 + kOddParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["bzd"][jF][m_evn],
-            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + m_evn], tolerance));
+            scalfor_out["bzd"][jF][kEvenParity],
+            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + kEvenParity], tolerance));
         EXPECT_TRUE(IsCloseRelAbs(
-            scalfor_out["bzd"][jF][m_odd],
-            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + m_odd], tolerance));
+            scalfor_out["bzd"][jF][kOddParity],
+            vmec.m_[thread_id]->bzd[(jF - nsMinF) * 2 + kOddParity], tolerance));
 
         EXPECT_TRUE(IsCloseRelAbs(scalfor_out["crd"][jF],
                                   vmec.m_[thread_id]->cxd[jF - nsMinF],
