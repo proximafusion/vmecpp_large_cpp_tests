@@ -13,6 +13,7 @@
 #include "util/testing/numerical_comparison_lib.h"
 #include "vmecpp/common/vmec_indata/vmec_indata.h"
 #include "vmecpp/vmec/output_quantities/output_quantities.h"
+#include "vmecpp/vmec/vmec_constants/vmec_algorithm_constants.h"
 #include "vmecpp/vmec/vmec/vmec.h"
 
 using nlohmann::json;
@@ -23,6 +24,8 @@ using ::testing::TestWithParam;
 using ::testing::Values;
 
 using file_io::ReadFile;
+using vmecpp::vmec_algorithm_constants::kEvenParity;
+using vmecpp::vmec_algorithm_constants::kOddParity;
 using testing::IsCloseRelAbs;
 using vmecpp::Vmec;
 
@@ -295,53 +298,53 @@ TEST_P(InverseFourierTransformGeometryTest,
         for (int l = 0; l < s.nThetaEff; ++l) {
           int idx_kl = ((jF - nsMinF1) * s.nZeta + k) * s.nThetaEff + l;
 
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][m_evn][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][kEvenParity][k][l],
                                     vmec.m_[thread_id]->r1_e[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][m_odd][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["r1"][jF][kOddParity][k][l],
                                     vmec.m_[thread_id]->r1_o[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][m_evn][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][kEvenParity][k][l],
                                     vmec.m_[thread_id]->ru_e[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][m_odd][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["ru"][jF][kOddParity][k][l],
                                     vmec.m_[thread_id]->ru_o[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][m_evn][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][kEvenParity][k][l],
                                     vmec.m_[thread_id]->z1_e[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][m_odd][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["z1"][jF][kOddParity][k][l],
                                     vmec.m_[thread_id]->z1_o[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][m_evn][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][kEvenParity][k][l],
                                     vmec.m_[thread_id]->zu_e[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][m_odd][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zu"][jF][kOddParity][k][l],
                                     vmec.m_[thread_id]->zu_o[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][m_evn][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][kEvenParity][k][l],
                                     vmec.m_[thread_id]->lu_e[idx_kl],
                                     tolerance));
-          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][m_odd][k][l],
+          EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lu"][jF][kOddParity][k][l],
                                     vmec.m_[thread_id]->lu_o[idx_kl],
                                     tolerance));
           if (s.lthreed) {
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->rv_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["rv"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->rv_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->zv_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["zv"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->zv_o[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][m_evn][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][kEvenParity][k][l],
                                       vmec.m_[thread_id]->lv_e[idx_kl],
                                       tolerance));
-            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][m_odd][k][l],
+            EXPECT_TRUE(IsCloseRelAbs(funct3d_geometry["lv"][jF][kOddParity][k][l],
                                       vmec.m_[thread_id]->lv_o[idx_kl],
                                       tolerance));
           }  // lthreed
@@ -362,16 +365,16 @@ TEST_P(InverseFourierTransformGeometryTest,
             // even-m and odd-m contributions in order to compute the required
             // reference quantities.
             const double expected_rcon_even =
-                funct3d_geometry["rcon"][jF][m_evn][k][l];
+                funct3d_geometry["rcon"][jF][kEvenParity][k][l];
             const double expected_rcon_odd =
-                funct3d_geometry["rcon"][jF][m_odd][k][l];
+                funct3d_geometry["rcon"][jF][kOddParity][k][l];
             const double expected_rcon =
                 expected_rcon_even + sqrtSF * expected_rcon_odd;
 
             const double expected_zcon_even =
-                funct3d_geometry["zcon"][jF][m_evn][k][l];
+                funct3d_geometry["zcon"][jF][kEvenParity][k][l];
             const double expected_zcon_odd =
-                funct3d_geometry["zcon"][jF][m_odd][k][l];
+                funct3d_geometry["zcon"][jF][kOddParity][k][l];
             const double expected_zcon =
                 expected_zcon_even + sqrtSF * expected_zcon_odd;
 

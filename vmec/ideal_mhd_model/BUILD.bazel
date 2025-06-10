@@ -22,6 +22,7 @@ cc_test(
     ],
     deps = [
         "//vmecpp/vmec/ideal_mhd_model",
+        "//vmecpp/vmec/vmec_constants",
         "@googletest//:gtest_main",
         "//util/file_io:file_io",
         "//util/testing:numerical_comparison_lib",
@@ -41,6 +42,7 @@ cc_test(
     ],
     deps = [
         "//vmecpp/vmec/ideal_mhd_model",
+        "//vmecpp/vmec/vmec_constants",
         "@googletest//:gtest_main",
         "//util/file_io:file_io",
         "//util/testing:numerical_comparison_lib",
