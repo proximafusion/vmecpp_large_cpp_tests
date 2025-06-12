@@ -86,24 +86,26 @@ TEST_P(InputsToNestorCallTest, CheckInputsToNestorCall) {
     std::vector<double> rSS(s.mnsize);
     std::vector<double> rSC;
     std::vector<double> rCS;
-    fourier_basis.cos_to_cc_ss(vac1n_vacuum["rmnc"], rCC, rSS, s.ntor, s.mpol);
+    std::vector<double> rmnc = vac1n_vacuum["rmnc"];
+    fourier_basis.cos_to_cc_ss(rmnc, rCC, rSS, s.ntor, s.mpol);
     if (s.lasym) {
       rSC.resize(s.mnsize);
       rCS.resize(s.mnsize);
-      fourier_basis.sin_to_sc_cs(vac1n_vacuum["rmns"], rSC, rCS, s.ntor,
-                                 s.mpol);
+      std::vector<double> rmns = vac1n_vacuum["rmns"];
+      fourier_basis.sin_to_sc_cs(rmns, rSC, rCS, s.ntor, s.mpol);
     }
 
     std::vector<double> zSC(s.mnsize);
     std::vector<double> zCS(s.mnsize);
     std::vector<double> zCC;
     std::vector<double> zSS;
-    fourier_basis.sin_to_sc_cs(vac1n_vacuum["zmns"], zSC, zCS, s.ntor, s.mpol);
+    std::vector<double> zmns = vac1n_vacuum["zmns"];
+    fourier_basis.sin_to_sc_cs(zmns, zSC, zCS, s.ntor, s.mpol);
     if (s.lasym) {
       zCC.resize(s.mnsize);
       zSS.resize(s.mnsize);
-      fourier_basis.cos_to_cc_ss(vac1n_vacuum["zmnc"], zCC, zSS, s.ntor,
-                                 s.mpol);
+      std::vector<double> zmnc = vac1n_vacuum["zmnc"];
+      fourier_basis.cos_to_cc_ss(zmnc, zCC, zSS, s.ntor, s.mpol);
     }
 
     for (int mn = 0; mn < s.mnsize; ++mn) {
