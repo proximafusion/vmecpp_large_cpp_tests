@@ -22,5 +22,4 @@ cc_test(
         "//vmecpp/vmec/output_quantities:output_quantities",
         "//vmecpp/common/makegrid_lib",
     ],
-    size = "small",
 )
