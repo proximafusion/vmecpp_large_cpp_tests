@@ -167,7 +167,7 @@ TEST(HotRestart, InitializeFromExistingState) {
   const double delt = 1.0;
   const int num_grids = 1;
   FlowControl fc(lfreeb, delt, num_grids + 1, num_threads);
-  fc.ns = indata->ns_array.back();
+  fc.ns = indata->ns_array[indata->ns_array.size() - 1];
   fc.deltaS = 1.0 / (fc.ns - 1.0);
 
   RadialPartitioning rp;

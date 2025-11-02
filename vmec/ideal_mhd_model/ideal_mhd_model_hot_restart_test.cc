@@ -67,9 +67,15 @@ TEST_P(FourierGeometryToStartWithFromWOutTest,
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
   Vmec vmec(*indata);
@@ -161,9 +167,15 @@ TEST_P(FourierGeometryToStartWithFromDebugOutTest,
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
   Vmec vmec(*indata);
@@ -251,9 +263,15 @@ TEST_P(InverseFourierTransformGeometryTest,
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
   Vmec vmec(*indata);
