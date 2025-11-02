@@ -6,18 +6,15 @@
 #include <H5File.h>
 
 #include <filesystem>
-#include <sstream>
 #include <string>
-#include <vector>
 
+#include "nlohmann/json.hpp"
 #include "absl/log/check.h"
 #include "absl/status/statusor.h"
-#include "absl/strings/str_split.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "util/file_io/file_io.h"
 #include "vmecpp/common/composed_types_lib/composed_types_lib.h"
-#include "vmecpp/common/vmec_indata/boundary_from_json.h"
 
 namespace fs = std::filesystem;
 
@@ -34,10 +31,10 @@ using composed_types::CurveRZFourierFromCsv;
 using composed_types::SurfaceRZFourier;
 using composed_types::SurfaceRZFourierFromCsv;
 
-using ::nlohmann::json;
+using nlohmann::json;
 
-using ::testing::ElementsAre;
-using ::testing::ElementsAreArray;
+using testing::ElementsAre;
+using testing::ElementsAreArray;
 
 // The tests below are setup to check that the input file contents were
 // correctly parsed. The reference values come from manual parsing, i.e.,
@@ -126,13 +123,13 @@ TEST(TestVmecINDATA, CheckParsingSolovev) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -142,18 +139,18 @@ TEST(TestVmecINDATA, CheckParsingSolovev) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingSolovev
 
@@ -239,13 +236,13 @@ TEST(TestVmecINDATA, CheckParsingSolovevAnalytical) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -255,18 +252,18 @@ TEST(TestVmecINDATA, CheckParsingSolovevAnalytical) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingSolovevAnalytical
 
@@ -344,13 +341,13 @@ TEST(TestVmecINDATA, CheckParsingSolovevNoAxis) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -360,18 +357,18 @@ TEST(TestVmecINDATA, CheckParsingSolovevNoAxis) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingSolovevNoAxis
 
@@ -449,13 +446,13 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFixedBoundary) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -465,18 +462,18 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFixedBoundary) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingCthLikeFixedBoundary
 
@@ -555,13 +552,13 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFixedBoundaryNZeta37) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -572,18 +569,18 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFixedBoundaryNZeta37) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingCthLikeFixedBoundaryNZeta37
 
@@ -661,13 +658,13 @@ TEST(TestVmecINDATA, CheckParsingCma) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -677,18 +674,18 @@ TEST(TestVmecINDATA, CheckParsingCma) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingCma
 
@@ -766,13 +763,13 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFreeBoundary) {
   EXPECT_THAT(vmec_indata->zaxis_s,
               ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->raxis_s,
+    EXPECT_THAT(*vmec_indata->raxis_s,
                 ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
-    EXPECT_THAT(vmec_indata->zaxis_c,
+    EXPECT_THAT(*vmec_indata->zaxis_c,
                 ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->raxis_s.size(), 0);
-    EXPECT_EQ(vmec_indata->zaxis_c.size(), 0);
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
   }
 
   // (initial guess for) boundary shape
@@ -782,18 +779,18 @@ TEST(TestVmecINDATA, CheckParsingCthLikeFreeBoundary) {
   absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
       SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
   ASSERT_TRUE(boundary_coefficients.ok());
-  EXPECT_THAT(vmec_indata->rbc,
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
               ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
-  EXPECT_THAT(vmec_indata->zbs,
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
               ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
   if (vmec_indata->lasym) {
-    EXPECT_THAT(vmec_indata->rbs,
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
-    EXPECT_THAT(vmec_indata->zbc,
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
                 ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
   } else {
-    EXPECT_EQ(vmec_indata->rbs.size(), 0);
-    EXPECT_EQ(vmec_indata->zbc.size(), 0);
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
   }
 }  // CheckParsingCthLikeFreeBoundary
 

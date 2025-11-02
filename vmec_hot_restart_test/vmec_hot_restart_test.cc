@@ -65,9 +65,15 @@ TEST_P(GeometryInitializationTest, CheckGeometryInitialization) {
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
   Vmec vmec(*indata);
@@ -155,9 +161,15 @@ TEST_P(JacobianTest, CheckJacobian) {
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
   Vmec vmec(*indata);
@@ -204,9 +216,15 @@ TEST_P(EnergiesTest, CheckEnergies) {
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
   Vmec vmec(*indata);
@@ -256,9 +274,15 @@ TEST_P(InvariantForceResidualsTest, CheckInvariantForceResiduals) {
 
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step = static_cast<int>(indata->ns_array.size()) - 1;
-  indata->ns_array = {indata->ns_array[last_multigrid_step]};
-  indata->ftol_array = {indata->ftol_array[last_multigrid_step]};
-  indata->niter_array = {indata->niter_array[last_multigrid_step]};
+  int last_ns = indata->ns_array[last_multigrid_step];
+  double last_ftol = indata->ftol_array[last_multigrid_step];
+  int last_niter = indata->niter_array[last_multigrid_step];
+  indata->ns_array.resize(1);
+  indata->ns_array[0] = last_ns;
+  indata->ftol_array.resize(1);
+  indata->ftol_array[0] = last_ftol;
+  indata->niter_array.resize(1);
+  indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
   Vmec vmec(*indata);
@@ -305,7 +329,9 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
 
   // the one with the slightly perturbed boundary
   VmecINDATA perturbed_indata = indata;
-  perturbed_indata.rbc[0] *= 1.0 + 1.0e-8;
+  // perturbed_indata.rbc(0, perturbed_indata.ntor) *= 1.0 + 1.0e-8;
+  // perturb the (m=0, n=-ntor) coefficient
+  perturbed_indata.rbc(0, 0) *= 1.0 + 1.0e-8;
 
   // RUNS
   const auto perturbed_output = vmecpp::run(perturbed_indata);
@@ -317,11 +343,15 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   // remove intermediate multi-grid steps for input of restarted run
   int last_multigrid_step =
       static_cast<int>(perturbed_indata.ns_array.size()) - 1;
-  perturbed_indata.ns_array = {perturbed_indata.ns_array[last_multigrid_step]};
-  perturbed_indata.ftol_array = {
-      perturbed_indata.ftol_array[last_multigrid_step]};
-  perturbed_indata.niter_array = {
-      perturbed_indata.niter_array[last_multigrid_step]};
+  int last_ns = perturbed_indata.ns_array[last_multigrid_step];
+  double last_ftol = perturbed_indata.ftol_array[last_multigrid_step];
+  int last_niter = perturbed_indata.niter_array[last_multigrid_step];
+  perturbed_indata.ns_array.resize(1);
+  perturbed_indata.ns_array[0] = last_ns;
+  perturbed_indata.ftol_array.resize(1);
+  perturbed_indata.ftol_array[0] = last_ftol;
+  perturbed_indata.niter_array.resize(1);
+  perturbed_indata.niter_array[0] = last_niter;
 
   const auto perturbed_restarted_output =
       vmecpp::run(perturbed_indata, vmecpp::HotRestartState(*original_output));

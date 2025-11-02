@@ -88,7 +88,7 @@ TEST(TestRadialProfiles, CheckSolovevSingleThreaded) {
       IsCloseRelAbs(profil1d["torflux_edge"], p.maxToroidalFlux, tolerance));
   EXPECT_TRUE(
       IsCloseRelAbs(profil1d["polflux_edge"], p.maxPoloidalFlux, tolerance));
-  EXPECT_TRUE(IsCloseRelAbs(profil1d["r00"], vmec_indata->rbc[0], tolerance));
+  EXPECT_TRUE(IsCloseRelAbs(profil1d["r00"], vmec_indata->rbc(0, vmec_indata->ntor), tolerance));
   EXPECT_TRUE(IsCloseRelAbs(profil1d["lamscale"], vmec_consts.lamscale,
                             tolerance));  // now in HandoverStorage!
   EXPECT_TRUE(IsCloseRelAbs(profil1d["currv"], p.currv, tolerance));
@@ -199,7 +199,7 @@ TEST_P(RadialProfilesTest, CheckRadialProfiles) {
     EXPECT_TRUE(
         IsCloseRelAbs(profil1d["polflux_edge"], p.maxPoloidalFlux, tolerance));
     EXPECT_TRUE(IsCloseRelAbs(
-        profil1d["r00"], vmec_indata->rbc[vmec_indata->ntor + 0], tolerance));
+        profil1d["r00"], vmec_indata->rbc(0, vmec_indata->ntor), tolerance));
     // now in HandoverStorage!
     EXPECT_TRUE(
         IsCloseRelAbs(profil1d["lamscale"], vmec_consts.lamscale, tolerance));

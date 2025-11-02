@@ -39,8 +39,8 @@ TEST(TestLinkingCurrent, CheckForW7X) {
   // W7-X standard magnetic configuration
   // 13.5kA in non-planar coils
   // no current in planar coils
-  std::vector<double> circuit_currents = {13.5e3, 13.5e3, 13.5e3, 13.5e3,
-                                          13.5e3, 0.0,    0.0};
+  Eigen::VectorXd circuit_currents(7);
+  circuit_currents << 13.5e3, 13.5e3, 13.5e3, 13.5e3, 13.5e3, 0.0, 0.0;
 
   // set circuit currents in MagneticConfiguration
   CHECK_OK(magnetics::SetCircuitCurrents(
