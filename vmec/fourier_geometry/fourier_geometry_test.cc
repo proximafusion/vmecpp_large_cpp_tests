@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 #include "vmecpp/vmec/fourier_geometry/fourier_geometry.h"
+#include "vmecpp/vmec/fourier_forces/fourier_forces.h"
+#include "vmecpp/vmec/fourier_velocity/fourier_velocity.h"
 
 #include <fstream>
 #include <string>
@@ -33,6 +35,24 @@ using testing::IsCloseRelAbs;
 using ::testing::TestWithParam;
 using ::testing::Values;
 }  // namespace
+
+class FourierGeometryProbe : public FourierGeometry {
+ public:
+  using FourierGeometry::FourierGeometry;
+  double* rcc_data() { return rcc.data(); }
+};
+
+class FourierVelocityProbe : public FourierVelocity {
+ public:
+  using FourierVelocity::FourierVelocity;
+  double* rcc_data() { return rcc.data(); }
+};
+
+class FourierForcesProbe : public FourierForces {
+ public:
+  using FourierForces::FourierForces;
+  double* rcc_data() { return rcc.data(); }
+};
 
 // used to specify case-specific tolerances
 struct DataSource {
@@ -142,6 +162,74 @@ INSTANTIATE_TEST_SUITE_P(
            DataSource{.identifier = "cma", .tolerance = DBL_EPSILON},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = DBL_EPSILON}));
+
+TEST(FourierCoeffsSemantics, CopyAndMoveRebindSpans) {
+  const std::string filename = "vmecpp/test_data/solovev.json";
+  absl::StatusOr<std::string> indata_json = ReadFile(filename);
+  ASSERT_TRUE(indata_json.ok());
+
+  absl::StatusOr<VmecINDATA> indata = VmecINDATA::FromJson(*indata_json);
+  ASSERT_TRUE(indata.ok());
+
+  Vmec vmec(*indata);
+  vmec.fc_.ns_old = 0;
+  vmec.fc_.delt0r = vmec.indata_.delt;
+  vmec.fc_.nsval = vmec.indata_.ns_array[0];
+  vmec.fc_.ftolv = vmec.indata_.ftol_array[0];
+  vmec.fc_.niterv = vmec.indata_.niter_array[0];
+  const bool reached_checkpoint = vmec.InitializeRadial(
+      VmecCheckpoint::NONE, INT_MAX, vmec.fc_.nsval, vmec.fc_.ns_old,
+      vmec.fc_.delt0r);
+  ASSERT_FALSE(reached_checkpoint);
+  const Sizes& s = vmec.s_;
+  const RadialPartitioning& r = *vmec.r_[0];
+  const int ns = vmec.fc_.ns;
+
+  FourierGeometryProbe g1(&s, &r, ns);
+  ASSERT_GT(g1.rmncc.size(), 0u);
+  g1.rmncc[0] = 1.0;
+
+  FourierGeometryProbe g2(g1);
+  ASSERT_EQ(g2.rmncc.data(), g2.rcc_data());
+  g2.rmncc[0] = 2.0;
+  EXPECT_EQ(g1.rmncc[0], 1.0);
+  EXPECT_EQ(g2.rmncc[0], 2.0);
+
+  FourierGeometryProbe g3(std::move(g2));
+  ASSERT_EQ(g3.rmncc.data(), g3.rcc_data());
+  g3.rmncc[0] = 3.0;
+  EXPECT_EQ(g3.rmncc[0], 3.0);
+
+  FourierVelocityProbe v1(&s, &r, ns);
+  ASSERT_GT(v1.vrcc.size(), 0u);
+  v1.vrcc[0] = 4.0;
+
+  FourierVelocityProbe v2(v1);
+  ASSERT_EQ(v2.vrcc.data(), v2.rcc_data());
+  v2.vrcc[0] = 5.0;
+  EXPECT_EQ(v1.vrcc[0], 4.0);
+  EXPECT_EQ(v2.vrcc[0], 5.0);
+
+  FourierVelocityProbe v3(std::move(v2));
+  ASSERT_EQ(v3.vrcc.data(), v3.rcc_data());
+  v3.vrcc[0] = 6.0;
+  EXPECT_EQ(v3.vrcc[0], 6.0);
+
+  FourierForcesProbe f1(&s, &r, ns);
+  ASSERT_GT(f1.frcc.size(), 0u);
+  f1.frcc[0] = 7.0;
+
+  FourierForcesProbe f2(f1);
+  ASSERT_EQ(f2.frcc.data(), f2.rcc_data());
+  f2.frcc[0] = 8.0;
+  EXPECT_EQ(f1.frcc[0], 7.0);
+  EXPECT_EQ(f2.frcc[0], 8.0);
+
+  FourierForcesProbe f3(std::move(f2));
+  ASSERT_EQ(f3.frcc.data(), f3.rcc_data());
+  f3.frcc[0] = 9.0;
+  EXPECT_EQ(f3.frcc[0], 9.0);
+}
 
 TEST(HotRestart, InitializeFromExistingState) {
   // Test that FourierGeometry can be initialized from rmnc, zmns, lmns_full and
