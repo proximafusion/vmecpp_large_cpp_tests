@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "absl/log/check.h"
+#include "absl/strings/str_cat.h"
 #include "gmock/gmock.h"  // ElementsAreArray
 #include "gtest/gtest.h"
 #include "util/file_io/file_io.h"
