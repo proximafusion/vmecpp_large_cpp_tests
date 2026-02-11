@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "absl/status/statusor.h"
+#include "absl/strings/str_cat.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "nlohmann/json.hpp"
