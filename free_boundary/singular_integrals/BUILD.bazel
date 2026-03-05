@@ -14,6 +14,7 @@ cc_test(
         "//util/file_io:file_io",
         "//util/testing:numerical_comparison_lib",
         "//vmecpp/vmec/vmec:vmec",
+        "//vmecpp/free_boundary/nestor",
     ],
     size = "small",
 )

@@ -18,6 +18,7 @@
 #include "util/testing/numerical_comparison_lib.h"
 #include "vmecpp/common/util/util.h"
 #include "vmecpp/vmec/vmec/vmec.h"
+#include "vmecpp/free_boundary/nestor/nestor.h"
 
 namespace vmecpp {
 

@@ -21,6 +21,7 @@
 #include "vmecpp/common/util/util.h"
 #include "vmecpp/free_boundary/surface_geometry_mockup/surface_geometry_mockup.h"
 #include "vmecpp/vmec/vmec/vmec.h"
+#include "vmecpp/free_boundary/nestor/nestor.h"
 
 namespace vmecpp {
 
