@@ -1,2 +1,6 @@
 # LibreOffice lock files
 .~lock*
+
+mgrid_*.nc
+jxbout_*.nc
+wout_*.nc
