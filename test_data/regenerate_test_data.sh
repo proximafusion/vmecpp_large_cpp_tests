@@ -43,3 +43,9 @@ rm -rf cth_like_fixed_bdy          && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cth_l
 rm -rf cth_like_fixed_bdy_nzeta_37 && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cth_like_fixed_bdy_nzeta_37
 rm -rf cma                         && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cma
 rm -rf cth_like_free_bdy           && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cth_like_free_bdy
+
+echo "formatting JSON files..."
+find . -name "*.json" -print0 | while IFS= read -r -d '' f; do
+  python -m json.tool --indent 4 "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+done
+echo "done"

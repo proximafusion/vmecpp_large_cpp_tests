@@ -58,7 +58,7 @@
 
   NS =    5 NO. FOURIER MODES =    6 FTOLV =  1.000E-12 NITER =   1000
 
-  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>
+  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>        
 
      1   8.18E-02  2.28E-03  1.17E-33  2.25E-33  8.18E-02  2.28E-03  2.88E-02  2.96E-03  5.49E-05  7.00E-37  9.61E-36  2.96E-03  5.49E-05  1.03E-02  9.00E-01  4.000E+00  2.6390E+00  3.786E-06  1.010
    186   8.44E-13  7.94E-13  2.24E-05  4.74E-05  2.24E-05  4.74E-05  5.57E-13  1.55E-15  6.13E-15  2.31E-08  2.28E-07  2.31E-08  2.28E-07  7.21E-15  9.00E-01  3.994E+00  2.5485E+00  3.875E-06  1.010
@@ -67,7 +67,7 @@
 
   NS =   11 NO. FOURIER MODES =    6 FTOLV =  1.000E-12 NITER =   2000
 
-  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>
+  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>        
 
      1   1.20E-04  3.70E-05  2.19E-08  3.89E-08  1.19E-04  3.62E-05  1.28E-06  1.26E-08  1.09E-08  1.26E-11  1.02E-10  1.22E-08  9.19E-09  1.00E-07  9.00E-01  3.994E+00  2.5484E+00  3.874E-06  1.011
    133   9.07E-13  4.66E-13  3.23E-09  4.76E-09  3.24E-09  4.76E-09  2.83E-14  2.41E-17  1.04E-16  4.31E-13  3.36E-12  4.31E-13  3.36E-12  2.63E-16  9.00E-01  3.991E+00  2.5484E+00  3.873E-06  1.010
@@ -76,7 +76,7 @@
 
   NS =   55 NO. FOURIER MODES =    6 FTOLV =  1.000E-12 NITER =   2000
 
-  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>
+  ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA      <M>        
 
      1   1.60E-04  3.05E-05  4.44E-09  7.83E-09  1.60E-04  3.04E-05  2.09E-07  2.99E-10  2.49E-10  7.68E-13  6.01E-12  2.83E-10  1.87E-10  9.06E-09  9.00E-01  3.991E+00  2.5484E+00  3.872E-06  1.011
    203   9.36E-13  7.80E-14  2.59E-11  1.03E-10  2.76E-11  1.03E-10  2.03E-15  9.20E-18  3.47E-19  9.51E-16  1.31E-14  9.73E-16  1.31E-14  1.55E-16  9.00E-01  3.989E+00  2.5484E+00  3.872E-06  1.010
@@ -91,7 +91,7 @@
        (NORMED TO SUM OF INDIVIDUAL TERMS)
 
       S     <RADIAL    TOROIDAL      IOTA      <JSUPU>    <JSUPV>     d(VOL)/   d(PRES)/    <M>     PRESF    <BSUBU>    <BSUBV>      <J.B>      <B.B>
-             FORCE>      FLUX                                         d(PHI)     d(PHI)
+             FORCE>      FLUX                                         d(PHI)     d(PHI)                             
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
   0.00E+00 -8.57E-04 -0.0000E+00  1.0000E+00 -2.231E+04 -2.227E+04 -1.233E+02 -1.250E-01  1.000  1.250E-01  0.000E+00  8.112E-01 -1.806E+04  4.134E-02
@@ -311,3 +311,4 @@
 
  FILE : solovev
  NUMBER OF JACOBIAN RESETS =    0
+
