@@ -22,6 +22,7 @@ fi
 # as we would otherwise write "mgrid_file":"vmecpp/test_data/NONE".
 indata2json input.solovev
 indata2json input.solovev_analytical
+indata2json --mgrid_folder vmecpp_large_cpp_tests/test_data input.solovev_free_bdy
 indata2json input.solovev_no_axis
 indata2json input.cth_like_fixed_bdy
 indata2json input.cth_like_fixed_bdy_nzeta_37
@@ -30,14 +31,16 @@ indata2json --mgrid_folder vmecpp_large_cpp_tests/test_data input.cth_like_free_
 
 # Re-do mgrid file for the cth_like_free_bdy case.
 makegrid makegrid_parameters_cth_like.json coils.cth_like
+makegrid makegrid_parameters_solovev.json coils.solovev
 
 # educational_VMEC is used to generate the reference data.
 # You can get it from here: https://github.com/jonathanschilling/educational_VMEC
-EDUCATIONAL_VMEC_EXECUTABLE=/data/jons/code/educational_VMEC/build/bin/xvmec
+EDUCATIONAL_VMEC_EXECUTABLE=/home/jons/code/educational_VMEC/build/bin/xvmec
 
 # now re-do VMEC runs
 rm -rf solovev                     && ${EDUCATIONAL_VMEC_EXECUTABLE} input.solovev
 rm -rf solovev_analytical          && ${EDUCATIONAL_VMEC_EXECUTABLE} input.solovev_analytical
+rm -rf solovev_free_bdy            && ${EDUCATIONAL_VMEC_EXECUTABLE} input.solovev_free_bdy
 rm -rf solovev_no_axis             && ${EDUCATIONAL_VMEC_EXECUTABLE} input.solovev_no_axis
 rm -rf cth_like_fixed_bdy          && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cth_like_fixed_bdy
 rm -rf cth_like_fixed_bdy_nzeta_37 && ${EDUCATIONAL_VMEC_EXECUTABLE} input.cth_like_fixed_bdy_nzeta_37
