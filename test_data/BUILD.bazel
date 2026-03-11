@@ -28,6 +28,18 @@ filegroup(
 )
 
 filegroup(
+    name = "solovev_free_bdy",
+    visibility = ["//visibility:public"],
+    srcs = [
+        "axis_coefficients_solovev_free_bdy.csv",
+        "boundary_coefficients_solovev_free_bdy.csv",
+        "jxbout_solovev_free_bdy.nc",
+        "mercier.solovev_free_bdy",
+        "threed1.solovev_free_bdy",
+    ] + glob(["solovev_free_bdy/**/*.json"]),
+)
+
+filegroup(
     name = "solovev_no_axis",
     visibility = ["//visibility:public"],
     srcs = [
