@@ -14,6 +14,7 @@ cc_test(
         "//vmecpp/test_data:cth_like_free_bdy",
         "//vmecpp_large_cpp_tests/test_data:solovev",
         "//vmecpp_large_cpp_tests/test_data:solovev_analytical",
+        "//vmecpp_large_cpp_tests/test_data:solovev_free_bdy",
         "//vmecpp_large_cpp_tests/test_data:solovev_no_axis",
         "//vmecpp_large_cpp_tests/test_data:cth_like_fixed_bdy",
         "//vmecpp_large_cpp_tests/test_data:cth_like_fixed_bdy_nzeta_37",
