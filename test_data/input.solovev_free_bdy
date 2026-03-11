@@ -29,7 +29,7 @@
   LASYM = F
   NFP =    1
   NCURR =    0
-  MPOL =   12
+  MPOL =   6
   NTOR =   0
   NZETA  =  1
   NS_ARRAY =    16     32    
