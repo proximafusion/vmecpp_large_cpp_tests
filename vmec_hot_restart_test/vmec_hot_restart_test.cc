@@ -77,7 +77,9 @@ TEST_P(GeometryInitializationTest, CheckGeometryInitialization) {
   indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
-  Vmec vmec(*indata);
+  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
+  ASSERT_TRUE(maybe_vmec.ok());
+  Vmec& vmec = *maybe_vmec;
   const auto checkpoint = VmecCheckpoint::SETUP_INITIAL_STATE;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
@@ -173,7 +175,9 @@ TEST_P(JacobianTest, CheckJacobian) {
   indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
-  Vmec vmec(*indata);
+  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
+  ASSERT_TRUE(maybe_vmec.ok());
+  Vmec& vmec = *maybe_vmec;
   const auto checkpoint = VmecCheckpoint::JACOBIAN;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
@@ -228,7 +232,9 @@ TEST_P(EnergiesTest, CheckEnergies) {
   indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
-  Vmec vmec(*indata);
+  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
+  ASSERT_TRUE(maybe_vmec.ok());
+  Vmec& vmec = *maybe_vmec;
   const auto checkpoint = VmecCheckpoint::ENERGY;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
@@ -286,7 +292,9 @@ TEST_P(InvariantForceResidualsTest, CheckInvariantForceResiduals) {
   indata->niter_array[0] = last_niter;
 
   // ACTUAL Vmec::run CALL
-  Vmec vmec(*indata);
+  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
+  ASSERT_TRUE(maybe_vmec.ok());
+  Vmec& vmec = *maybe_vmec;
   const auto checkpoint = VmecCheckpoint::INVARIANT_RESIDUALS;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
