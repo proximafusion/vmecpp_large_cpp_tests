@@ -64,9 +64,7 @@ TEST_P(SpectralConstraintTest, CheckSpectralConstraint) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
 
   bool reached_checkpoint =
@@ -126,9 +124,7 @@ TEST_P(FourierGeometryToStartWithTest, CheckFourierGeometryToStartWith) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -210,9 +206,7 @@ TEST_P(InverseFourierTransformGeometryTest,
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -374,9 +368,7 @@ TEST_P(JacobianTest, CheckJacobian) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -465,9 +457,7 @@ TEST_P(MetricTest, CheckMetric) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -553,9 +543,7 @@ TEST_P(VolumeTest, CheckVolume) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const FlowControl& fc = vmec.fc_;
     const HandoverStorage& h = vmec.h_;
 
@@ -623,9 +611,7 @@ TEST_P(ContravariantMagneticFieldTest, CheckContravariantMagneticField) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -758,9 +744,7 @@ TEST_P(CovariantMagneticFieldTest, CheckCovariantMagneticField) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -835,9 +819,7 @@ TEST_P(TotalPressureAndEnergiesTest, CheckTotalPressureAndEnergies) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
     const HandoverStorage& h = vmec.h_;
@@ -919,9 +901,7 @@ TEST_P(RadialForceBalanceTest, CheckRadialForceBalance) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
@@ -1011,9 +991,7 @@ TEST_P(HybridLambdaForceTest, CheckHybridLambdaForce) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
     const HandoverStorage& h = vmec.h_;
@@ -1138,9 +1116,7 @@ TEST_P(UpdateRadialPreconditionerTest, CheckUpdateRadialPreconditioner) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1313,9 +1289,7 @@ TEST_P(ForceNormsTest, CheckForceNorms) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const HandoverStorage& h = vmec.h_;
     const FlowControl& fc = vmec.fc_;
@@ -1405,9 +1379,7 @@ TEST_P(ConstraintForceMultiplierTest, CheckConstraintForceMultiplier) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
@@ -1481,9 +1453,7 @@ TEST_P(RBsqTest, CheckRBsq) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1548,9 +1518,7 @@ TEST_P(AliasTest, CheckAlias) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1671,9 +1639,7 @@ TEST_P(RealspaceForcesTest, CheckRealspaceForces) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1781,9 +1747,7 @@ TEST_P(ForwardTransformForcesTest, CheckForwardTransformForces) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1909,9 +1873,7 @@ TEST_P(PhysicalForcesTest, CheckPhysicalForces) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -1996,9 +1958,7 @@ TEST_P(InvariantResidualsTest, CheckInvariantResiduals) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
@@ -2061,9 +2021,7 @@ TEST_P(ApplyM1PreconditionerTest, CheckApplyM1Preconditioner) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -2144,9 +2102,7 @@ TEST_P(AssembleRZPreconditionerTest, CheckAssembleRZPreconditioner) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -2249,9 +2205,7 @@ TEST_P(ApplyPreconditionerTest, CheckApplyPreconditioner) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
@@ -2412,9 +2366,7 @@ TEST_P(PreconditionedResidualsTest, CheckPreconditionedResiduals) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =

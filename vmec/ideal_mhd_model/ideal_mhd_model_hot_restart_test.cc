@@ -79,9 +79,7 @@ TEST_P(FourierGeometryToStartWithFromWOutTest,
   indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*indata);
   const auto checkpoint = VmecCheckpoint::FOURIER_GEOMETRY_TO_START_WITH;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
@@ -181,9 +179,7 @@ TEST_P(FourierGeometryToStartWithFromDebugOutTest,
   indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*indata);
   const auto checkpoint = VmecCheckpoint::FOURIER_GEOMETRY_TO_START_WITH;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*iterations_before_checkpointing=*/0,
@@ -279,9 +275,7 @@ TEST_P(InverseFourierTransformGeometryTest,
   indata->niter_array[0] = last_niter;
 
   // ACTUAL CALL
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*indata);
   const auto checkpoint = VmecCheckpoint::INV_DFT_GEOMETRY;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*iterations_before_checkpointing=*/0,

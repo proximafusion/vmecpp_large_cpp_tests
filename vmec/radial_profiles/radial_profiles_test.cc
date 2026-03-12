@@ -56,9 +56,7 @@ TEST(TestRadialProfiles, CheckSolovevSingleThreaded) {
   ASSERT_TRUE(vmec_indata.ok());
 
   // force single-threaded execution
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata, /*magnetic_response_table=*/nullptr, /*max_threads=*/1);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata, /*max_threads=*/1);
 
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
@@ -157,9 +155,7 @@ TEST_P(RadialProfilesTest, CheckRadialProfiles) {
   absl::StatusOr<VmecINDATA> vmec_indata = VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
   const VmecConstants& vmec_consts = vmec.constants_;

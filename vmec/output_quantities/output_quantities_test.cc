@@ -64,9 +64,7 @@ TEST_P(GatherDataFromThreadsTest, CheckGatherDataFromThreads) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -129,9 +127,7 @@ TEST_P(GatherDataFromThreadsTest, CheckMatrixElementOrder) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -193,9 +189,7 @@ TEST_P(BSSRoutineOutputsTest, CheckBSSRoutineOutputs) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -287,9 +281,7 @@ TEST_P(LowpassFilterBSubsSTest, CheckLowpassFilterBSubsS) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -383,9 +375,7 @@ TEST_P(ExtrapolateBSubsSTest, CheckExtrapolateBSubsS) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -446,9 +436,7 @@ TEST_P(JxBOutputContentsTest, CheckJxBOutputContents) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -577,9 +565,7 @@ TEST_P(MercierStabilityTest, CheckMercierStability) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -711,9 +697,7 @@ TEST_P(Threed1FirstTableTest, CheckThreed1FirstTable) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const FlowControl& fc = vmec.fc_;
 
   // run until convergence
@@ -843,9 +827,7 @@ TEST_P(Threed1GeometricMagneticQuantitiesTest,
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -1066,9 +1048,7 @@ TEST_P(Threed1VolumetricsTest, CheckThreed1Volumetrics) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
 
   const FlowControl& fc = vmec.fc_;
 
@@ -1146,9 +1126,7 @@ TEST_P(Threed1AxisTest, CheckThreed1Axis) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const Sizes& s = vmec.s_;
   const FlowControl& fc = vmec.fc_;
 
@@ -1212,9 +1190,7 @@ TEST_P(Threed1BetasTest, CheckThreed1Betas) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const FlowControl& fc = vmec.fc_;
 
   // run until convergence
@@ -1277,9 +1253,7 @@ TEST_P(Threed1ShafranovIntegralsTest, CheckThreed1ShafranovIntegrals) {
       VmecINDATA::FromJson(*indata_json);
   ASSERT_TRUE(vmec_indata.ok());
 
-  absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-  ASSERT_TRUE(maybe_vmec.ok());
-  Vmec& vmec = *maybe_vmec;
+  Vmec vmec(*vmec_indata);
   const FlowControl& fc = vmec.fc_;
 
   // run until convergence

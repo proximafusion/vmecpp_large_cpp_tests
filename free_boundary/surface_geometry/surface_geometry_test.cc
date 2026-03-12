@@ -58,9 +58,7 @@ TEST_P(SurfaceGeometryTest, CheckSurfaceGeometry) {
   ASSERT_TRUE(vmec_indata.ok());
 
   for (int number_of_iterations : data_source_.iter2_to_test) {
-    absl::StatusOr<Vmec> maybe_vmec = Vmec::FromIndata(*vmec_indata);
-    ASSERT_TRUE(maybe_vmec.ok());
-    Vmec& vmec = *maybe_vmec;
+    Vmec vmec(*vmec_indata);
     const Sizes& s = vmec.s_;
     const FlowControl& fc = vmec.fc_;
 
