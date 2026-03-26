@@ -188,7 +188,7 @@ TEST_P(FourierGeometryToStartWithFromDebugOutTest,
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
 
-  const int niter = output_quantities.wout.maximum_iterations - 1;
+  const int niter = output_quantities.wout.niter - 1;
   const std::string ref_filename = absl::StrFormat(
       "vmecpp_large_cpp_tests/test_data/%s/totzsp_input/"
       "totzsp_input_%05d_%06d_01.%s.json",
@@ -285,7 +285,7 @@ TEST_P(InverseFourierTransformGeometryTest,
   ASSERT_TRUE(*checkpoint_reached);
 
   // COMPARISON WITH REFERENCES
-  const int niter = output_quantities.wout.maximum_iterations - 1;
+  const int niter = output_quantities.wout.niter - 1;
   const std::string ref_filename = absl::StrFormat(
       "vmecpp_large_cpp_tests/test_data/%s/funct3d_geometry/"
       "funct3d_geometry_%05d_%06d_01.%s.json",
