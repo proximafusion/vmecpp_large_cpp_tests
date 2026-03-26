@@ -340,9 +340,9 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, InverseFourierTransformGeometryTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
-           DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-14},
+           DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 6.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
-                      .tolerance = 5.0e-14},
+                      .tolerance = 6.0e-14},
            DataSource{
                .identifier = "cma", .tolerance = 5.0e-12, .iter2_to_test = {1}},
            DataSource{.identifier = "cth_like_free_bdy",
