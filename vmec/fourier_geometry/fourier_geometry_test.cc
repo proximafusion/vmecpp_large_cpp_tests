@@ -209,16 +209,16 @@ TEST(HotRestart, InitializeFromExistingState) {
 
   // COMPARISON WITH REFERENCES
   for (int jF = 0; jF < fc.ns; ++jF) {
-    const auto& rmnc_row = wout.rmnc.row(jF);
-    const auto& ref_rmnc =
-        std::vector<double>(rmnc_row.data(), rmnc_row.data() + rmnc_row.size());
+    const Eigen::VectorXd rmnc_col = wout.rmnc.col(jF);
+    const std::vector<double> ref_rmnc(rmnc_col.data(),
+                                       rmnc_col.data() + rmnc_col.size());
     std::vector<double> ref_rmncc(s.mpol * (s.ntor + 1));
     std::vector<double> ref_rmnss(s.mpol * (s.ntor + 1));
     fb.cos_to_cc_ss(ref_rmnc, ref_rmncc, ref_rmnss, s.ntor, s.mpol);
 
-    const auto& zmns_row = wout.zmns.row(jF);
-    const auto& ref_zmns =
-        std::vector<double>(zmns_row.data(), zmns_row.data() + zmns_row.size());
+    const Eigen::VectorXd zmns_col = wout.zmns.col(jF);
+    const std::vector<double> ref_zmns(zmns_col.data(),
+                                       zmns_col.data() + zmns_col.size());
     std::vector<double> ref_zmnsc(s.mpol * (s.ntor + 1));
     std::vector<double> ref_zmncs(s.mpol * (s.ntor + 1));
     fb.sin_to_sc_cs(ref_zmns, ref_zmnsc, ref_zmncs, s.ntor, s.mpol);
@@ -241,9 +241,9 @@ TEST(HotRestart, InitializeFromExistingState) {
       // }
     }
 
-    const auto& lmns_row = wout.lmns_full.row(jF);
-    const auto& ref_lmns =
-        std::vector<double>(lmns_row.data(), lmns_row.data() + lmns_row.size());
+    const Eigen::VectorXd lmns_col = wout.lmns_full.col(jF);
+    const std::vector<double> ref_lmns(lmns_col.data(),
+                                       lmns_col.data() + lmns_col.size());
     std::vector<double> ref_lmnsc(s.mpol * (s.ntor + 1));
     std::vector<double> ref_lmncs(s.mpol * (s.ntor + 1));
     fb.sin_to_sc_cs(ref_lmns, ref_lmnsc, ref_lmncs, s.ntor, s.mpol);

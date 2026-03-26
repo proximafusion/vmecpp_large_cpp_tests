@@ -365,7 +365,7 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   const auto& test_wout = perturbed_restarted_output->wout;
   const auto tolerance = ds.tolerance;
 
-  EXPECT_EQ(test_wout.sign_of_jacobian, expected_wout.sign_of_jacobian);
+  EXPECT_EQ(test_wout.signgs, expected_wout.signgs);
   EXPECT_EQ(test_wout.gamma, expected_wout.gamma);
   EXPECT_EQ(test_wout.pcurr_type, expected_wout.pcurr_type);
   EXPECT_EQ(test_wout.pmass_type, expected_wout.pmass_type);
@@ -393,7 +393,7 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
 
   EXPECT_EQ(test_wout.ns, expected_wout.ns);
   EXPECT_EQ(test_wout.ftolv, expected_wout.ftolv);
-  EXPECT_LT(test_wout.maximum_iterations, expected_wout.maximum_iterations);
+  EXPECT_LT(test_wout.niter, expected_wout.niter);
 
   EXPECT_EQ(test_wout.lfreeb, expected_wout.lfreeb);
   EXPECT_EQ(test_wout.mgrid_mode, expected_wout.mgrid_mode);
@@ -419,7 +419,7 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   EXPECT_TRUE(IsCloseRelAbs(expected_wout.aspect, test_wout.aspect, tolerance));
 
   EXPECT_TRUE(
-      IsCloseRelAbs(expected_wout.betatot, test_wout.betatot, tolerance));
+      IsCloseRelAbs(expected_wout.betatotal, test_wout.betatotal, tolerance));
   EXPECT_TRUE(
       IsCloseRelAbs(expected_wout.betapol, test_wout.betapol, tolerance));
   EXPECT_TRUE(
@@ -435,7 +435,7 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   EXPECT_TRUE(
       IsCloseRelAbs(expected_wout.IonLarmor, test_wout.IonLarmor, tolerance));
   EXPECT_TRUE(
-      IsCloseRelAbs(expected_wout.VolAvgB, test_wout.VolAvgB, tolerance));
+      IsCloseRelAbs(expected_wout.volavgB, test_wout.volavgB, tolerance));
 
   EXPECT_TRUE(IsCloseRelAbs(expected_wout.ctor, test_wout.ctor, tolerance));
 
@@ -444,7 +444,7 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   EXPECT_TRUE(
       IsCloseRelAbs(expected_wout.Rmajor_p, test_wout.Rmajor_p, tolerance));
   EXPECT_TRUE(
-      IsCloseRelAbs(expected_wout.volume_p, test_wout.volume_p, tolerance));
+      IsCloseRelAbs(expected_wout.volume, test_wout.volume, tolerance));
 
   EXPECT_TRUE(IsCloseRelAbs(expected_wout.fsqr, test_wout.fsqr, tolerance));
   EXPECT_TRUE(IsCloseRelAbs(expected_wout.fsqz, test_wout.fsqz, tolerance));
@@ -453,18 +453,18 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   // -------------------
   // one-dimensional array quantities
 
-  const int ns = static_cast<int>(expected_wout.iota_full.size());
+  const int ns = static_cast<int>(expected_wout.iotaf.size());
   for (int jF = 0; jF < ns; ++jF) {
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.iota_full[jF],
-                              test_wout.iota_full[jF], tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.safety_factor[jF],
-                              test_wout.safety_factor[jF], tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.pressure_full[jF],
-                              test_wout.pressure_full[jF], tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.toroidal_flux[jF],
-                              test_wout.toroidal_flux[jF], tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.poloidal_flux[jF],
-                              test_wout.poloidal_flux[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.iotaf[jF],
+                              test_wout.iotaf[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.q_factor[jF],
+                              test_wout.q_factor[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.presf[jF],
+                              test_wout.presf[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.phi[jF],
+                              test_wout.phi[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.chi[jF],
+                              test_wout.chi[jF], tolerance));
     EXPECT_TRUE(
         IsCloseRelAbs(expected_wout.phipf[jF], test_wout.phipf[jF], tolerance));
     EXPECT_TRUE(
@@ -475,30 +475,30 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
     EXPECT_TRUE(
         IsCloseRelAbs(expected_wout.jcurv[jF], test_wout.jcurv[jF], tolerance))
         << "jF = " << jF;
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.spectral_width[jF],
-                              test_wout.spectral_width[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.specw[jF],
+                              test_wout.specw[jF], tolerance));
   }  // jF
 
-  for (int jH = 0; jH < ns - 1; ++jH) {
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.iota_half[jH],
-                              test_wout.iota_half[jH], tolerance));
+  for (int jF = 0; jF < ns; ++jF) {
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.iotas[jF],
+                              test_wout.iotas[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.mass[jH], test_wout.mass[jH], tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.pressure_half[jH],
-                              test_wout.pressure_half[jH], tolerance));
+        IsCloseRelAbs(expected_wout.mass[jF], test_wout.mass[jF], tolerance));
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.pres[jF],
+                              test_wout.pres[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.beta[jH], test_wout.beta[jH], tolerance));
+        IsCloseRelAbs(expected_wout.beta_vol[jF], test_wout.beta_vol[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.buco[jH], test_wout.buco[jH], tolerance));
+        IsCloseRelAbs(expected_wout.buco[jF], test_wout.buco[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.bvco[jH], test_wout.bvco[jH], tolerance));
+        IsCloseRelAbs(expected_wout.bvco[jF], test_wout.bvco[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.dVds[jH], test_wout.dVds[jH], tolerance));
+        IsCloseRelAbs(expected_wout.vp[jF], test_wout.vp[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.phips[jH], test_wout.phips[jH], tolerance));
+        IsCloseRelAbs(expected_wout.phips[jF], test_wout.phips[jF], tolerance));
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.overr[jH], test_wout.overr[jH], tolerance));
-  }  // jH
+        IsCloseRelAbs(expected_wout.over_r[jF], test_wout.over_r[jF], tolerance));
+  }  // jF
 
   for (int jF = 0; jF < ns; ++jF) {
     EXPECT_TRUE(
@@ -511,17 +511,17 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
     EXPECT_TRUE(
         IsCloseRelAbs(expected_wout.DMerc[jF], test_wout.DMerc[jF], tolerance))
         << "jF = " << jF;
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.Dshear[jF], test_wout.Dshear[jF],
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.DShear[jF], test_wout.DShear[jF],
                               tolerance))
         << "jF = " << jF;
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.Dwell[jF], test_wout.Dwell[jF], tolerance))
+        IsCloseRelAbs(expected_wout.DWell[jF], test_wout.DWell[jF], tolerance))
         << "jF = " << jF;
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.Dcurr[jF], test_wout.Dcurr[jF], tolerance))
+        IsCloseRelAbs(expected_wout.DCurr[jF], test_wout.DCurr[jF], tolerance))
         << "jF = " << jF;
     EXPECT_TRUE(
-        IsCloseRelAbs(expected_wout.Dgeod[jF], test_wout.Dgeod[jF], tolerance))
+        IsCloseRelAbs(expected_wout.DGeod[jF], test_wout.DGeod[jF], tolerance))
         << "jF = " << jF;
   }  // jF
 
@@ -548,84 +548,67 @@ TEST_P(HotRestartIntegration, CheckVaryingBoundary) {
   // // stellarator-symmetric Fourier coefficients
 
   for (int n = 0; n <= test_wout.ntor; ++n) {
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.raxis_c[n], test_wout.raxis_c[n],
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.raxis_cc[n], test_wout.raxis_cc[n],
                               tolerance));
-    EXPECT_TRUE(IsCloseRelAbs(expected_wout.zaxis_s[n], test_wout.zaxis_s[n],
+    EXPECT_TRUE(IsCloseRelAbs(expected_wout.zaxis_cs[n], test_wout.zaxis_cs[n],
                               tolerance));
   }  // n
 
   for (int jF = 0; jF < ns; ++jF) {
     for (int mn = 0; mn < test_wout.mnmax; ++mn) {
-      EXPECT_TRUE(IsCloseRelAbs(expected_wout.rmnc(jF * test_wout.mnmax + mn),
-                                test_wout.rmnc(jF * test_wout.mnmax + mn),
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.rmnc(mn, jF),
+                                test_wout.rmnc(mn, jF),
                                 tolerance))
           << "jF = " << jF << " mn = " << mn;
-      EXPECT_TRUE(IsCloseRelAbs(expected_wout.zmns(jF * test_wout.mnmax + mn),
-                                test_wout.zmns(jF * test_wout.mnmax + mn),
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.zmns(mn, jF),
+                                test_wout.zmns(mn, jF),
                                 tolerance))
           << "jF = " << jF << " mn = " << mn;
     }  // mn
   }    // jF
 
-  for (int jH = 0; jH < ns - 1; ++jH) {
+  for (int jF = 0; jF < ns; ++jF) {
     for (int mn = 0; mn < test_wout.mnmax; ++mn) {
-      EXPECT_TRUE(IsCloseRelAbs(expected_wout.lmns(jH * test_wout.mnmax + mn),
-                                test_wout.lmns(jH * test_wout.mnmax + mn),
-                                tolerance))
-          << "jH = " << jH << " mn = " << mn;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.lmns(mn, jF),
+                                test_wout.lmns(mn, jF), tolerance))
+          << "jF = " << jF << " mn = " << mn;
     }  // mn
-  }    // jH
+  }    // jF
 
-  for (int jH = 0; jH < ns - 1; ++jH) {
+  for (int jF = 0; jF < ns; ++jF) {
     for (int mn_nyq = 0; mn_nyq < test_wout.mnmax_nyq; ++mn_nyq) {
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.gmnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.gmnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bmnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bmnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bsubumnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bsubumnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bsubvmnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bsubvmnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      // FIXME(jons): something is still weird here with bsubsmns...
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bsubsmns(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bsubsmns(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bsupumnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bsupumnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
-      EXPECT_TRUE(IsCloseRelAbs(
-          expected_wout.bsupvmnc(jH * test_wout.mnmax_nyq + mn_nyq),
-          test_wout.bsupvmnc(jH * test_wout.mnmax_nyq + mn_nyq), tolerance))
-          << "jH = " << jH << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.gmnc(mn_nyq, jF),
+                                test_wout.gmnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bmnc(mn_nyq, jF),
+                                test_wout.bmnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bsubumnc(mn_nyq, jF),
+                                test_wout.bsubumnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bsubvmnc(mn_nyq, jF),
+                                test_wout.bsubvmnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bsubsmns(mn_nyq, jF),
+                                test_wout.bsubsmns(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bsupumnc(mn_nyq, jF),
+                                test_wout.bsupumnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.bsupvmnc(mn_nyq, jF),
+                                test_wout.bsupvmnc(mn_nyq, jF), tolerance))
+          << "jF = " << jF << " mn_nyq = " << mn_nyq;
     }  // mn_nyq
-  }    // jH
-
-  // also test the wrong extrapolation of bsubsmns
-  // beyond the magnetic axis for backward compatibility
-  for (int mn_nyq = 0; mn_nyq < test_wout.mnmax_nyq; ++mn_nyq) {
-    EXPECT_TRUE(IsCloseRelAbs(
-        expected_wout.bsubsmns(0 * test_wout.mnmax_nyq + mn_nyq),
-        test_wout.bsubsmns(0 * test_wout.mnmax_nyq + mn_nyq), tolerance));
-  }  // mn_nyq
+  }    // jF
 
   // -------------------
   // non-stellarator-symmetric Fourier coefficients
 
   if (test_wout.lasym) {
     for (int n = 0; n <= test_wout.ntor; ++n) {
-      EXPECT_TRUE(IsCloseRelAbs(expected_wout.raxis_s[n], test_wout.raxis_s[n],
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.raxis_cs[n], test_wout.raxis_cs[n],
                                 tolerance));
-      EXPECT_TRUE(IsCloseRelAbs(expected_wout.zaxis_c[n], test_wout.zaxis_c[n],
+      EXPECT_TRUE(IsCloseRelAbs(expected_wout.zaxis_cc[n], test_wout.zaxis_cc[n],
                                 tolerance));
     }  // n
   }
