@@ -35,7 +35,7 @@ makegrid makegrid_parameters_solovev.json coils.solovev
 
 # educational_VMEC is used to generate the reference data.
 # You can get it from here: https://github.com/jonathanschilling/educational_VMEC
-EDUCATIONAL_VMEC_EXECUTABLE=/home/jons/code/educational_VMEC/build/bin/xvmec
+EDUCATIONAL_VMEC_EXECUTABLE=/data/jonathan/work/code/educational_VMEC/build/bin/xvmec
 
 # now re-do VMEC runs
 rm -rf solovev                     && ${EDUCATIONAL_VMEC_EXECUTABLE} input.solovev
