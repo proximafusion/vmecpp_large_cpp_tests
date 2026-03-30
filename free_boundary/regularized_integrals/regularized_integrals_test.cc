@@ -195,7 +195,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestRegularizedIntegrals, GreenFTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 5.0e-10,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 5.0e-10,
                       .iter2_to_test = {53, 54}}));
