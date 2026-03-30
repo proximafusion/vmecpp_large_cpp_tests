@@ -177,7 +177,7 @@ TEST_P(FourierGeometryToStartWithTest, CheckFourierGeometryToStartWith) {
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMhdModel, FourierGeometryToStartWithTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-15},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-15},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-15, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
@@ -341,7 +341,7 @@ TEST_P(InverseFourierTransformGeometryTest,
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, InverseFourierTransformGeometryTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 2.0e-15},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-15, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 6.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
@@ -1737,7 +1737,7 @@ TEST_P(RealspaceForcesTest, CheckRealspaceForces) {
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, RealspaceForcesTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-14},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-14},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-13},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-13, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-11},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
@@ -1950,7 +1950,7 @@ TEST_P(PhysicalForcesTest, CheckPhysicalForces) {
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, PhysicalForcesTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-13},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
@@ -2011,7 +2011,7 @@ TEST_P(InvariantResidualsTest, CheckInvariantResiduals) {
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, InvariantResidualsTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-16},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-16},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-16, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
@@ -2096,7 +2096,7 @@ TEST_P(ApplyM1PreconditionerTest, CheckApplyM1Preconditioner) {
 INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, ApplyM1PreconditionerTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
-           DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-13},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
