@@ -220,9 +220,13 @@ TEST_P(BsqVacTest, CheckBsqVac) {
   }
 }  // CheckBsqVac
 
-INSTANTIATE_TEST_SUITE_P(TestNestor, BsqVacTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-10,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestNestor, BsqVacTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {53, 54}}));
 
 }  // namespace vmecpp

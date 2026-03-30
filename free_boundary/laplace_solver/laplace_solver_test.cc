@@ -150,10 +150,14 @@ TEST_P(FourPTest, CheckFourP) {
   }
 }  // CheckFourP
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, FourPTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, FourPTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class FourISymmTest : public TestWithParam<DataSource> {
  protected:
@@ -227,10 +231,14 @@ TEST_P(FourISymmTest, CheckFourISymm) {
   }
 }  // CheckFourISymm
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, FourISymmTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, FourISymmTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class FourIAccumulateGrpmnTest : public TestWithParam<DataSource> {
  protected:
@@ -322,10 +330,14 @@ TEST_P(FourIAccumulateGrpmnTest, CheckFourIAccumulateGrpmn) {
   }
 }  // CheckFourIAccumulateGrpmn
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, FourIAccumulateGrpmnTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, FourIAccumulateGrpmnTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class FourIKvDftTest : public TestWithParam<DataSource> {
  protected:
@@ -470,10 +482,14 @@ TEST_P(FourIKvDftTest, CheckFourIKvDft) {
   }
 }  // CheckFourIKvDft
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, FourIKvDftTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, FourIKvDftTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class FourIKuDftTest : public TestWithParam<DataSource> {
  protected:
@@ -582,10 +598,14 @@ TEST_P(FourIKuDftTest, CheckFourIKuDft) {
   }
 }  // CheckFourIKuDft
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, FourIKuDftTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, FourIKuDftTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class SolverInputsTest : public TestWithParam<DataSource> {
  protected:
@@ -682,10 +702,14 @@ TEST_P(SolverInputsTest, CheckSolverInputs) {
   }
 }  // CheckSolverInputs
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, SolverInputsTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, SolverInputsTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 class LinearSolverTest : public TestWithParam<DataSource> {
  protected:
@@ -739,9 +763,13 @@ TEST_P(LinearSolverTest, CheckLinearSolver) {
   }
 }  // CheckLinearSolver
 
-INSTANTIATE_TEST_SUITE_P(TestLaplaceSolver, LinearSolverTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestLaplaceSolver, LinearSolverTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 }  // namespace vmecpp
