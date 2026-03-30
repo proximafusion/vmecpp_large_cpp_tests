@@ -88,10 +88,14 @@ TEST_P(TanuTanvTest, CheckTanuTanv) {
   }
 }  // CheckTanuTanv
 
-INSTANTIATE_TEST_SUITE_P(TestRegularizedIntegrals, TanuTanvTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-14,
-                                           .iter2_to_test = {53}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestRegularizedIntegrals, TanuTanvTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-14,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-14,
+                      .iter2_to_test = {53}}));
 
 class GreenFTest : public TestWithParam<DataSource> {
  protected:
@@ -187,9 +191,13 @@ TEST_P(GreenFTest, CheckGreenF) {
   }
 }  // CheckGreenF
 
-INSTANTIATE_TEST_SUITE_P(TestRegularizedIntegrals, GreenFTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 5.0e-10,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestRegularizedIntegrals, GreenFTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 5.0e-10,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 5.0e-10,
+                      .iter2_to_test = {53, 54}}));
 
 }  // namespace vmecpp
