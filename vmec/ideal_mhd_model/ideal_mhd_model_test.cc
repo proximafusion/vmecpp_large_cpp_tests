@@ -1500,7 +1500,7 @@ TEST_P(RBsqTest, CheckRBsq) {
           for (int k = 0; k < s.nZeta; ++k) {
             const int kl = k * s.nThetaEff + l;
             EXPECT_TRUE(IsCloseRelAbs(rbsq["rbsq"][k][l],
-                                      vmec.m_[thread_id]->rBSq[kl], tolerance));
+                                      vmec.h_.rBSq[kl], tolerance));
           }  // k
         }    // l
       }      // check for LCFS
