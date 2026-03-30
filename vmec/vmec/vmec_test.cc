@@ -377,6 +377,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestVmec, MultigridResultTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-11},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-13},
