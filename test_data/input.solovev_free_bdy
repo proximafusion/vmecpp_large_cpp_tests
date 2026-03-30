@@ -52,7 +52,7 @@
   RBC( 0,1) =  1.026     ZBS( 0,1) =  1.580
   RBC( 0,2) =  0.068     ZBS( 0,2) = -0.010
 
-  iter2_to_dump = 1, 2, 3
+  iter2_to_dump = 1, 2, 3, 4
 
   dump_add_fluxes          = .true.
   dump_metric              = .true.
