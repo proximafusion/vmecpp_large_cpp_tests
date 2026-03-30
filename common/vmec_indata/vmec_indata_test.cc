@@ -267,6 +267,125 @@ TEST(TestVmecINDATA, CheckParsingSolovevAnalytical) {
   }
 }  // CheckParsingSolovevAnalytical
 
+
+TEST(TestVmecINDATA, CheckParsingSolovevFreeBdy) {
+  absl::StatusOr<std::string> indata_json =
+      ReadFile("vmecpp_large_cpp_tests/test_data/solovev_free_bdy.json");
+  ASSERT_TRUE(indata_json.ok()) << indata_json.status().message();
+
+  const absl::StatusOr<VmecINDATA> vmec_indata =
+      VmecINDATA::FromJson(*indata_json);
+  ASSERT_TRUE(vmec_indata.ok());
+
+  // numerical resolution, symmetry assumption
+  EXPECT_EQ(vmec_indata->lasym, false);
+  EXPECT_EQ(vmec_indata->nfp, 1);
+  EXPECT_EQ(vmec_indata->mpol, 6);
+  EXPECT_EQ(vmec_indata->ntor, 0);
+  EXPECT_EQ(vmec_indata->ntheta, 0);
+  EXPECT_EQ(vmec_indata->nzeta, 1);
+
+  // multi-grid steps
+  EXPECT_THAT(vmec_indata->ns_array, ElementsAre(16, 32));
+  EXPECT_THAT(vmec_indata->ftol_array, ElementsAre(1.0e-10, 1.0e-14));
+  EXPECT_THAT(vmec_indata->niter_array, ElementsAre(10000, 20000));
+
+  // global physics parameters
+  EXPECT_EQ(vmec_indata->phiedge, 1.0);
+  EXPECT_EQ(vmec_indata->ncurr, 0);
+
+  // mass / pressure profile
+  EXPECT_EQ(vmec_indata->pmass_type, "power_series");
+  EXPECT_THAT(vmec_indata->am, ElementsAre(0.125, -0.125));
+  EXPECT_EQ(vmec_indata->am_aux_s.size(), 0);
+  EXPECT_EQ(vmec_indata->am_aux_f.size(), 0);
+  EXPECT_EQ(vmec_indata->pres_scale, 1.0);
+  EXPECT_EQ(vmec_indata->gamma, 0.0);
+  EXPECT_EQ(vmec_indata->spres_ped, 1.0);
+
+  // (initial guess for) iota profile
+  EXPECT_EQ(vmec_indata->piota_type, "power_series");
+  EXPECT_THAT(vmec_indata->ai, ElementsAre(0.49, -0.3));
+  EXPECT_EQ(vmec_indata->ai_aux_s.size(), 0);
+  EXPECT_EQ(vmec_indata->ai_aux_f.size(), 0);
+
+  // enclosed toroidal current profile
+  EXPECT_EQ(vmec_indata->pcurr_type, "power_series");
+  EXPECT_EQ(vmec_indata->ac.size(), 0);
+  EXPECT_EQ(vmec_indata->ac_aux_s.size(), 0);
+  EXPECT_EQ(vmec_indata->ac_aux_f.size(), 0);
+  EXPECT_EQ(vmec_indata->curtor, 0.0);
+  EXPECT_EQ(vmec_indata->bloat, 1.0);
+
+  // free-boundary parameters
+  EXPECT_EQ(vmec_indata->lfreeb, true);
+  EXPECT_EQ(vmec_indata->mgrid_file, "vmecpp_large_cpp_tests/test_data/mgrid_solovev.nc");
+  EXPECT_THAT(vmec_indata->extcur, ElementsAre(3884526.409876309,
+        -293557.7123737952,
+        -17348.51853677043,
+        60021.3701697316,
+        60025.40940490887,
+        -17349.93103183817,
+        -293553.153630851,
+        -356063.9108717275,
+        -65884.34719283084,
+        -11543.87774712987,
+        -11535.46510755219,
+        -65883.00858364606,
+        -356058.9388468855));
+  EXPECT_EQ(vmec_indata->nvacskip, 6);
+
+  // tweaking parameters
+  EXPECT_EQ(vmec_indata->nstep, 100);
+  EXPECT_THAT(vmec_indata->aphi, ElementsAre(1.0));
+  EXPECT_EQ(vmec_indata->delt, 0.9);
+  EXPECT_EQ(vmec_indata->tcon0, 1.0);
+  EXPECT_EQ(vmec_indata->lforbal, false);
+
+  // initial guess for magnetic axis
+  absl::StatusOr<std::string> axis_coefficients_csv =
+      ReadFile("vmecpp_large_cpp_tests/test_data/axis_coefficients_solovev_free_bdy.csv");
+  ASSERT_TRUE(axis_coefficients_csv.ok());
+
+  absl::StatusOr<CurveRZFourier> axis_coefficients =
+      CurveRZFourierFromCsv(*axis_coefficients_csv);
+  ASSERT_TRUE(axis_coefficients.ok());
+  EXPECT_THAT(vmec_indata->raxis_c,
+              ElementsAreArray(*CoefficientsRCos(*axis_coefficients)));
+  EXPECT_THAT(vmec_indata->zaxis_s,
+              ElementsAreArray(*CoefficientsZSin(*axis_coefficients)));
+  if (vmec_indata->lasym) {
+    EXPECT_THAT(*vmec_indata->raxis_s,
+                ElementsAreArray(*CoefficientsRSin(*axis_coefficients)));
+    EXPECT_THAT(*vmec_indata->zaxis_c,
+                ElementsAreArray(*CoefficientsZCos(*axis_coefficients)));
+  } else {
+    EXPECT_FALSE(vmec_indata->raxis_s.has_value());
+    EXPECT_FALSE(vmec_indata->zaxis_c.has_value());
+  }
+
+  // (initial guess for) boundary shape
+  absl::StatusOr<std::string> boundary_coefficients_csv =
+      ReadFile("vmecpp_large_cpp_tests/test_data/boundary_coefficients_solovev_free_bdy.csv");
+  ASSERT_TRUE(boundary_coefficients_csv.ok());
+  absl::StatusOr<SurfaceRZFourier> boundary_coefficients =
+      SurfaceRZFourierFromCsv(*boundary_coefficients_csv);
+  ASSERT_TRUE(boundary_coefficients.ok());
+  EXPECT_THAT(vmec_indata->rbc.transpose().reshaped(),
+              ElementsAreArray(*CoefficientsRCos(*boundary_coefficients)));
+  EXPECT_THAT(vmec_indata->zbs.transpose().reshaped(),
+              ElementsAreArray(*CoefficientsZSin(*boundary_coefficients)));
+  if (vmec_indata->lasym) {
+    EXPECT_THAT(vmec_indata->rbs->transpose().reshaped(),
+                ElementsAreArray(*CoefficientsRSin(*boundary_coefficients)));
+    EXPECT_THAT(vmec_indata->zbc->transpose().reshaped(),
+                ElementsAreArray(*CoefficientsZCos(*boundary_coefficients)));
+  } else {
+    EXPECT_FALSE(vmec_indata->rbs.has_value());
+    EXPECT_FALSE(vmec_indata->zbc.has_value());
+  }
+}  // CheckParsingSolovevFreeBdy
+
 TEST(TestVmecINDATA, CheckParsingSolovevNoAxis) {
   absl::StatusOr<std::string> indata_json =
       ReadFile("vmecpp/test_data/solovev_no_axis.json");
