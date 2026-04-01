@@ -36,6 +36,7 @@ struct DataSource {
   std::string identifier;
   double tolerance = 0.0;
   std::vector<int> iter2_to_test = {1, 2};
+  int target_ns = 0;
 };
 
 class InputsToNestorCallTest : public TestWithParam<DataSource> {
@@ -64,7 +65,7 @@ TEST_P(InputsToNestorCallTest, CheckInputsToNestorCall) {
     const HandoverStorage& h = vmec.h_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_VACUUM, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VAC1_VACUUM, number_of_iterations, data_source_.target_ns).value();
     ASSERT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -140,6 +141,10 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-12,
                       .iter2_to_test = {3, 4}},
+           DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-12,
+                      .iter2_to_test = {2, 3},
+                      .target_ns = 32},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-12,
                       .iter2_to_test = {53, 54}}));
@@ -169,7 +174,7 @@ TEST_P(BsqVacTest, CheckBsqVac) {
     const HandoverStorage& h = vmec.h_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_BSQVAC, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VAC1_BSQVAC, number_of_iterations, data_source_.target_ns).value();
     ASSERT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -225,6 +230,10 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-10,
                       .iter2_to_test = {3, 4}},
+           DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-12,
+                      .iter2_to_test = {2},
+                      .target_ns = 32},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-10,
                       .iter2_to_test = {53, 54}}));

@@ -44,6 +44,7 @@ struct DataSource {
   std::string identifier;
   double tolerance = 0.0;
   std::vector<int> iter2_to_test = {1, 2};
+  int target_ns = 0;
 };
 
 class SpectralConstraintTest : public TestWithParam<DataSource> {
@@ -68,7 +69,9 @@ TEST_P(SpectralConstraintTest, CheckSpectralConstraint) {
   const Sizes& s = vmec.s_;
 
   bool reached_checkpoint =
-      vmec.run(VmecCheckpoint::SPECTRAL_CONSTRAINT, 1).value();
+      vmec.run(VmecCheckpoint::SPECTRAL_CONSTRAINT, 1,
+               data_source_.target_ns)
+          .value();
   EXPECT_TRUE(reached_checkpoint);
 
   filename = absl::StrFormat(
@@ -131,7 +134,7 @@ TEST_P(FourierGeometryToStartWithTest, CheckFourierGeometryToStartWith) {
 
     bool reached_checkpoint =
         vmec.run(VmecCheckpoint::FOURIER_GEOMETRY_TO_START_WITH,
-                 number_of_iterations)
+                 number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -178,7 +181,8 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMhdModel, FourierGeometryToStartWithTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-14},
@@ -213,7 +217,7 @@ TEST_P(InverseFourierTransformGeometryTest,
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::INV_DFT_GEOMETRY, number_of_iterations)
+        vmec.run(VmecCheckpoint::INV_DFT_GEOMETRY, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -342,7 +346,9 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, InverseFourierTransformGeometryTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
+
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 6.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 6.0e-14},
@@ -376,7 +382,7 @@ TEST_P(JacobianTest, CheckJacobian) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::JACOBIAN, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::JACOBIAN, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -433,6 +439,8 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
+
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 2.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 2.0e-14},
@@ -466,7 +474,7 @@ TEST_P(MetricTest, CheckMetric) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::METRIC, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::METRIC, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -520,6 +528,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-15},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-15},
@@ -553,7 +562,7 @@ TEST_P(VolumeTest, CheckVolume) {
     const HandoverStorage& h = vmec.h_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VOLUME, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VOLUME, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -589,6 +598,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-16},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-16},
@@ -622,7 +632,7 @@ TEST_P(ContravariantMagneticFieldTest, CheckContravariantMagneticField) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::B_CONTRA, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::B_CONTRA, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -723,6 +733,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-16},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-16},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-13},
@@ -756,7 +767,7 @@ TEST_P(CovariantMagneticFieldTest, CheckCovariantMagneticField) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::B_CO, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::B_CO, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -799,6 +810,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-13},
@@ -833,7 +845,7 @@ TEST_P(TotalPressureAndEnergiesTest, CheckTotalPressureAndEnergies) {
     const HandoverStorage& h = vmec.h_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::ENERGY, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::ENERGY, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -882,6 +894,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-16},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-16},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-13},
@@ -914,7 +927,7 @@ TEST_P(RadialForceBalanceTest, CheckRadialForceBalance) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::RADIAL_FORCE_BALANCE, number_of_iterations)
+        vmec.run(VmecCheckpoint::RADIAL_FORCE_BALANCE, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -973,6 +986,8 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-13, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
+
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-12},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-12},
@@ -1007,7 +1022,7 @@ TEST_P(HybridLambdaForceTest, CheckHybridLambdaForce) {
     const HandoverStorage& h = vmec.h_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::HYBRID_LAMBDA_FORCE, number_of_iterations)
+        vmec.run(VmecCheckpoint::HYBRID_LAMBDA_FORCE, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -1099,6 +1114,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-13},
@@ -1133,7 +1149,7 @@ TEST_P(UpdateRadialPreconditionerTest, CheckUpdateRadialPreconditioner) {
 
     bool reached_checkpoint =
         vmec.run(VmecCheckpoint::UPDATE_RADIAL_PRECONDITIONER,
-                 number_of_iterations)
+                 number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -1273,6 +1289,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-12},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-12},
@@ -1307,7 +1324,7 @@ TEST_P(ForceNormsTest, CheckForceNorms) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::UPDATE_FORCE_NORMS, number_of_iterations)
+        vmec.run(VmecCheckpoint::UPDATE_FORCE_NORMS, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -1364,6 +1381,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-14},
@@ -1396,7 +1414,7 @@ TEST_P(ConstraintForceMultiplierTest, CheckConstraintForceMultiplier) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::UPDATE_TCON, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::UPDATE_TCON, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     // only one file, since only updated every 25 iterations
@@ -1435,6 +1453,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-13},
@@ -1472,7 +1491,7 @@ TEST_P(RBsqTest, CheckRBsq) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::RBSQ, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::RBSQ, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     // The filename of rbsq debugging output is created based on the number of
@@ -1513,6 +1532,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-10,
                       .iter2_to_test = {3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {2, 3}, .target_ns = 32},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-10,
                       .iter2_to_test = {53, 54}}));
@@ -1541,7 +1561,7 @@ TEST_P(AliasTest, CheckAlias) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::ALIAS, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::ALIAS, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -1630,6 +1650,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 2.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 2.0e-14},
@@ -1663,7 +1684,7 @@ TEST_P(RealspaceForcesTest, CheckRealspaceForces) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::REALSPACE_FORCES, number_of_iterations)
+        vmec.run(VmecCheckpoint::REALSPACE_FORCES, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -1738,7 +1759,8 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, RealspaceForcesTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-13},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-13, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-13, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-11},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-11},
@@ -1772,7 +1794,7 @@ TEST_P(ForwardTransformForcesTest, CheckForwardTransformForces) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::FWD_DFT_FORCES, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::FWD_DFT_FORCES, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -1862,6 +1884,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-13},
@@ -1899,7 +1922,7 @@ TEST_P(PhysicalForcesTest, CheckPhysicalForces) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::PHYSICAL_FORCES, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::PHYSICAL_FORCES, number_of_iterations, data_source_.target_ns).value();
     EXPECT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -1951,7 +1974,8 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, PhysicalForcesTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-13},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-13, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-13},
@@ -1984,7 +2008,7 @@ TEST_P(InvariantResidualsTest, CheckInvariantResiduals) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::INVARIANT_RESIDUALS, number_of_iterations)
+        vmec.run(VmecCheckpoint::INVARIANT_RESIDUALS, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -2012,7 +2036,8 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, InvariantResidualsTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-16},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 2.0e-15},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-16, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 2.0e-15, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 5.0e-14},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-14},
@@ -2049,7 +2074,7 @@ TEST_P(ApplyM1PreconditionerTest, CheckApplyM1Preconditioner) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::APPLY_M1_PRECONDITIONER, number_of_iterations)
+        vmec.run(VmecCheckpoint::APPLY_M1_PRECONDITIONER, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -2097,7 +2122,8 @@ INSTANTIATE_TEST_SUITE_P(
     TestIdealMHDModel, ApplyM1PreconditionerTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 5.0e-15},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-13},
-           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-14, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-13, .iter2_to_test = {1, 2, 3, 4}},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 5.0e-12, .iter2_to_test = {1, 2}, .target_ns = 32},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-13},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-13},
@@ -2132,7 +2158,7 @@ TEST_P(AssembleRZPreconditionerTest, CheckAssembleRZPreconditioner) {
 
     bool reached_checkpoint =
         vmec.run(VmecCheckpoint::ASSEMBLE_RZ_PRECONDITIONER,
-                 number_of_iterations)
+                 number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -2236,7 +2262,7 @@ TEST_P(ApplyPreconditionerTest, CheckApplyPreconditioner) {
 
     bool reached_checkpoint =
         vmec.run(VmecCheckpoint::APPLY_RADIAL_PRECONDITIONER,
-                 number_of_iterations)
+                 number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
@@ -2396,7 +2422,7 @@ TEST_P(PreconditionedResidualsTest, CheckPreconditionedResiduals) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::PRECONDITIONED_RESIDUALS, number_of_iterations)
+        vmec.run(VmecCheckpoint::PRECONDITIONED_RESIDUALS, number_of_iterations, data_source_.target_ns)
             .value();
     EXPECT_TRUE(reached_checkpoint);
 
