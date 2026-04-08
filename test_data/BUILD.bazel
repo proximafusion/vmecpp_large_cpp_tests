@@ -11,6 +11,7 @@ filegroup(
         "mercier.solovev",
         "threed1.solovev",
         "solovev.out.h5",
+        "wout_solovev.nc",
     ] + glob(["solovev/**/*.json"]),
 )
 
@@ -35,6 +36,7 @@ filegroup(
         "jxbout_solovev_no_axis.nc",
         "mercier.solovev_no_axis",
         "threed1.solovev_no_axis",
+        "wout_solovev_no_axis.nc",
     ] + glob(["solovev_no_axis/**/*.json"]),
 )
 
@@ -48,6 +50,7 @@ filegroup(
         "mercier.cth_like_fixed_bdy",
         "threed1.cth_like_fixed_bdy",
         "cth_like_fixed_bdy.out.h5",
+        "wout_cth_like_fixed_bdy.nc",
     ] + glob(["cth_like_fixed_bdy/**/*.json"]),
 )
 
@@ -60,6 +63,7 @@ filegroup(
         "jxbout_cth_like_fixed_bdy_nzeta_37.nc",
         "mercier.cth_like_fixed_bdy_nzeta_37",
         "threed1.cth_like_fixed_bdy_nzeta_37",
+        "wout_cth_like_fixed_bdy_nzeta_37.nc",
     ] + glob(["cth_like_fixed_bdy_nzeta_37/**/*.json"]),
 )
 
@@ -71,6 +75,7 @@ filegroup(
         "boundary_coefficients_cma.csv",
         "mercier.cma",
         "threed1.cma",
+        "wout_cma.nc",
     ] + glob(["cma/**/*.json"]),
 )
 
