@@ -75,7 +75,7 @@
 
   ITER    FSQR      FSQZ      CONR      CONZ      MHDR      MHDZ      FSQL      fsqr      fsqz      conr      conz      mhdr      mhdz      fsql      DELT    RAX(v=0)      WMHD      BETA     PHIEDGE  DEL-BSQ    FEDGE
 
-    1  1.19E-02  9.45E-06  4.37E-34  8.71E-34  1.19E-02  9.45E-06  4.58E-03  4.53E-04  1.41E-07  3.43E-37  4.08E-36  4.53E-04  1.41E-07  1.25E-03  9.00E-01  3.999E+00  2.4714E+00  4.085E-06  1.000E+00  0.000 0.00E+00
+    1  1.19E-02  9.45E-06  2.32E-34  4.41E-34  1.19E-02  9.45E-06  4.58E-03  4.53E-04  1.41E-07  9.11E-38  9.58E-37  4.53E-04  1.41E-07  1.25E-03  9.00E-01  3.999E+00  2.4714E+00  4.085E-06  1.000E+00  0.000 0.00E+00
 
   VACUUM PRESSURE TURNED ON AT    4 ITERATIONS
 
@@ -170,7 +170,7 @@
  Volume Average B      =       0.195214 [T]
  Ion Larmor Radius     =       0.016392 [M] X Ti(keV)**0.5
  <J||**2>/<J-perp**2>  = ************** (Vol. Averaged)
- <JPS**2>/<J-perp**2>  =  122633.110227 (Vol. Averaged)
+ <JPS**2>/<J-perp**2>  =  122633.110205 (Vol. Averaged)
 
 
 -----------------------------------------------------------------------
