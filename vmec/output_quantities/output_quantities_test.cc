@@ -1318,4 +1318,83 @@ INSTANTIATE_TEST_SUITE_P(
     // NOTE: vacuum_b_phi likely largest influence here!
 );
 
+class CurrentDensityTest : public TestWithParam<DataSource> {
+ protected:
+  void SetUp() override { data_source_ = GetParam(); }
+  DataSource data_source_;
+};
+
+TEST_P(CurrentDensityTest, CheckCurrentDensityFourierCoefficients) {
+  const double tolerance = data_source_.tolerance;
+
+  std::string filename =
+      absl::StrFormat("vmecpp/test_data/%s.json", data_source_.identifier);
+  absl::StatusOr<std::string> indata_json = ReadFile(filename);
+  ASSERT_TRUE(indata_json.ok());
+
+  const absl::StatusOr<VmecINDATA> vmec_indata =
+      VmecINDATA::FromJson(*indata_json);
+  ASSERT_TRUE(vmec_indata.ok());
+
+  Vmec vmec(*vmec_indata);
+
+  // run until convergence
+  bool reached_checkpoint = vmec.run().value();
+  ASSERT_FALSE(reached_checkpoint);
+
+  const WOutFileContents& wout = vmec.output_quantities_.wout;
+
+  // Read reference currumnc/currvmnc from Fortran wout file
+  std::string ref_wout_filename = absl::StrFormat(
+      "vmecpp_large_cpp_tests/test_data/wout_%s.nc",
+      data_source_.identifier);
+
+  int ncid = 0;
+  ASSERT_EQ(nc_open(ref_wout_filename.c_str(), NC_NOWRITE, &ncid), NC_NOERR)
+      << "Failed to open reference wout file: " << ref_wout_filename;
+
+  // Read 2D arrays: Fortran stores as (ns, mnmax_nyq), C++ as (mnmax_nyq, ns)
+  const std::vector<std::vector<double>> ref_currumnc =
+      NetcdfReadArray2D(ncid, "currumnc");
+  const std::vector<std::vector<double>> ref_currvmnc =
+      NetcdfReadArray2D(ncid, "currvmnc");
+  nc_close(ncid);
+
+  const int ns = static_cast<int>(ref_currumnc.size());
+  ASSERT_EQ(ns, wout.ns);
+  ASSERT_GT(ns, 0);
+  const int mnmax_nyq = static_cast<int>(ref_currumnc[0].size());
+  ASSERT_EQ(mnmax_nyq, wout.mnmax_nyq);
+
+  for (int jF = 0; jF < ns; ++jF) {
+    for (int mn = 0; mn < mnmax_nyq; ++mn) {
+      // ref_currumnc[jF][mn] is Fortran ordering (ns, mnmax_nyq)
+      // wout.currumnc(mn, jF) is C++ ordering (mnmax_nyq, ns)
+      EXPECT_TRUE(
+          IsCloseRelAbs(ref_currumnc[jF][mn], wout.currumnc(mn, jF), tolerance))
+          << "currumnc mismatch at jF=" << jF << " mn=" << mn
+          << " ref=" << ref_currumnc[jF][mn]
+          << " test=" << wout.currumnc(mn, jF);
+      EXPECT_TRUE(
+          IsCloseRelAbs(ref_currvmnc[jF][mn], wout.currvmnc(mn, jF), tolerance))
+          << "currvmnc mismatch at jF=" << jF << " mn=" << mn
+          << " ref=" << ref_currvmnc[jF][mn]
+          << " test=" << wout.currvmnc(mn, jF);
+    }  // mn
+  }  // jF
+}  // CheckCurrentDensityFourierCoefficients
+
+// NOTE: Tolerances are larger than for other output quantities because
+// the current density is computed via finite differences of the covariant B
+// field Fourier coefficients, which amplifies the differences between the
+// Fortran and C++ equilibria.
+INSTANTIATE_TEST_SUITE_P(
+    TestOutputQuantities, CurrentDensityTest,
+    Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-4},
+           DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-4},
+           DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-4},
+           DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
+                      .tolerance = 1.0e-4},
+           DataSource{.identifier = "cma", .tolerance = 1.0e-4}));
+
 }  // namespace vmecpp
