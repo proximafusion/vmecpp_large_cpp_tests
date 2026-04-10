@@ -134,6 +134,7 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-30},
            DataSource{.identifier = "solovev_analytical", .tolerance = 1.0e-30},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-30},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-30},
            DataSource{.identifier = "cth_like_fixed_bdy", .tolerance = 1.0e-30},
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 1.0e-30},

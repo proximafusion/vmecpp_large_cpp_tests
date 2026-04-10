@@ -154,6 +154,49 @@ TEST(TestSizes, CheckSolovevNoAxis) {
   EXPECT_EQ(sizes.mnmax, 6);
 }  // CheckSolovevNoAxis
 
+TEST(TestSizes, CheckSolovevFreeBdy) {
+  double tolerance = 1.0e-30;
+
+  absl::StatusOr<std::string> indata_json =
+      ReadFile("vmecpp/test_data/solovev_free_bdy.json");
+  ASSERT_TRUE(indata_json.ok());
+
+  absl::StatusOr<VmecINDATA> vmec_indata = VmecINDATA::FromJson(*indata_json);
+  ASSERT_TRUE(vmec_indata.ok());
+
+  Sizes sizes(*vmec_indata);
+
+  EXPECT_EQ(sizes.lasym, false);
+  EXPECT_EQ(sizes.nfp, 1);
+  EXPECT_EQ(sizes.mpol, 6);
+  EXPECT_EQ(sizes.ntor, 0);
+
+  // ntheta was 0 in the input file, so compute it here
+  EXPECT_EQ(sizes.ntheta, 2 * sizes.mpol + 6);
+  EXPECT_EQ(sizes.nZeta, 1);
+
+  EXPECT_EQ(sizes.lthreed, false);
+  EXPECT_EQ(sizes.num_basis, 1);
+
+  EXPECT_EQ(sizes.nThetaEven, 18);
+  EXPECT_EQ(sizes.nThetaReduced, 10);
+  EXPECT_EQ(sizes.nThetaEff, 10);
+
+  EXPECT_EQ(sizes.nZnT, 10);
+
+  for (int l = 0; l < sizes.nThetaEff; ++l) {
+    if (l == 0 || l == sizes.nThetaEff - 1) {
+      EXPECT_TRUE(IsCloseRelAbs(1.0 / 18, sizes.wInt[l], tolerance));
+    } else {
+      EXPECT_TRUE(IsCloseRelAbs(2.0 / 18, sizes.wInt[l], tolerance));
+    }
+  }
+
+  EXPECT_EQ(sizes.mnsize, 6);
+
+  EXPECT_EQ(sizes.mnmax, 6);
+}  // CheckSolovevFreeBdy
+
 TEST(TestSizes, CheckCthLikeFixedBoundary) {
   double tolerance = 1.0e-30;
 

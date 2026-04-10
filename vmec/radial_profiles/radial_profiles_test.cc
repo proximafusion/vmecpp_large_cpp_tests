@@ -269,6 +269,8 @@ INSTANTIATE_TEST_SUITE_P(
            DataSource{.identifier = "solovev_analytical", .tolerance = 1.0e-15},
            DataSource{.identifier = "solovev_no_axis",
                       .tolerance = DBL_EPSILON / 2},
+           DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = DBL_EPSILON / 2},
            DataSource{.identifier = "cth_like_fixed_bdy",
                       .tolerance = DBL_EPSILON},
            DataSource{.identifier = "cma", .tolerance = DBL_EPSILON},
