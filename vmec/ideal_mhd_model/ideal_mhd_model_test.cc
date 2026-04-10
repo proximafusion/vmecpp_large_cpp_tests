@@ -1508,10 +1508,14 @@ TEST_P(RBsqTest, CheckRBsq) {
   }
 }  // CheckRBsq
 
-INSTANTIATE_TEST_SUITE_P(TestIdealMHDModel, RBsqTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-10,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestIdealMHDModel, RBsqTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {53, 54}}));
 
 class AliasTest : public TestWithParam<DataSource> {
  protected:
