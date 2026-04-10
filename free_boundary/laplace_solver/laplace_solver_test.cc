@@ -38,6 +38,7 @@ struct DataSource {
   std::string identifier;
   double tolerance = 0.0;
   std::vector<int> iter2_to_test = {1, 2};
+  int target_ns = 0;
 };
 
 class FourPTest : public TestWithParam<DataSource> {
@@ -64,7 +65,7 @@ TEST_P(FourPTest, CheckFourP) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURP, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VAC1_FOURP, number_of_iterations, data_source_.target_ns).value();
     ASSERT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -183,7 +184,7 @@ TEST_P(FourISymmTest, CheckFourISymm) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURI_SYMM, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VAC1_FOURI_SYMM, number_of_iterations, data_source_.target_ns).value();
     ASSERT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -264,7 +265,7 @@ TEST_P(FourIAccumulateGrpmnTest, CheckFourIAccumulateGrpmn) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURI_KV_DFT, number_of_iterations)
+        vmec.run(VmecCheckpoint::VAC1_FOURI_KV_DFT, number_of_iterations, data_source_.target_ns)
             .value();
     ASSERT_TRUE(reached_checkpoint);
 
@@ -363,7 +364,7 @@ TEST_P(FourIKvDftTest, CheckFourIKvDft) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURI_KV_DFT, number_of_iterations)
+        vmec.run(VmecCheckpoint::VAC1_FOURI_KV_DFT, number_of_iterations, data_source_.target_ns)
             .value();
     ASSERT_TRUE(reached_checkpoint);
 
@@ -515,7 +516,7 @@ TEST_P(FourIKuDftTest, CheckFourIKuDft) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURI_KU_DFT, number_of_iterations)
+        vmec.run(VmecCheckpoint::VAC1_FOURI_KU_DFT, number_of_iterations, data_source_.target_ns)
             .value();
     ASSERT_TRUE(reached_checkpoint);
 
@@ -545,7 +546,7 @@ TEST_P(FourIKuDftTest, CheckFourIKuDft) {
 
       if (vmec.m_[0]->get_ivacskip() == 0) {
         for (int mn = 0; mn < mnpd; ++mn) {
-          bvec_sin[mn] += ls.bvec_sin[mn] + si.bvec_sin[mn] / s.nfp;
+          bvec_sin[mn] += ls.bvecSinShare[mn] + si.bvec_sin[mn] / s.nfp;
         }  // mn
       }    // fullUpdate
     }      // thread_id
@@ -631,7 +632,7 @@ TEST_P(SolverInputsTest, CheckSolverInputs) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_FOURI_KU_DFT, number_of_iterations)
+        vmec.run(VmecCheckpoint::VAC1_FOURI_KU_DFT, number_of_iterations, data_source_.target_ns)
             .value();
     ASSERT_TRUE(reached_checkpoint);
 
@@ -661,7 +662,7 @@ TEST_P(SolverInputsTest, CheckSolverInputs) {
 
       if (vmec.m_[0]->get_ivacskip() == 0) {
         for (int mn = 0; mn < mnpd; ++mn) {
-          bvec_sin[mn] += ls.bvec_sin[mn] + si.bvec_sin[mn] / s.nfp;
+          bvec_sin[mn] += ls.bvecSinShare[mn] + si.bvec_sin[mn] / s.nfp;
         }  // mn
       }    // fullUpdate
     }      // thread_id
@@ -735,7 +736,7 @@ TEST_P(LinearSolverTest, CheckLinearSolver) {
     const FlowControl& fc = vmec.fc_;
 
     bool reached_checkpoint =
-        vmec.run(VmecCheckpoint::VAC1_SOLVER, number_of_iterations).value();
+        vmec.run(VmecCheckpoint::VAC1_SOLVER, number_of_iterations, data_source_.target_ns).value();
     ASSERT_TRUE(reached_checkpoint);
 
     filename = absl::StrFormat(
@@ -768,6 +769,10 @@ INSTANTIATE_TEST_SUITE_P(
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {3, 4}},
+           DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-12,
+                      .iter2_to_test = {2, 3},
+                      .target_ns = 32},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));

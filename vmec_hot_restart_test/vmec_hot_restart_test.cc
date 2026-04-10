@@ -81,7 +81,7 @@ TEST_P(GeometryInitializationTest, CheckGeometryInitialization) {
   const auto checkpoint = VmecCheckpoint::SETUP_INITIAL_STATE;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/vmecpp::HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
@@ -177,7 +177,7 @@ TEST_P(JacobianTest, CheckJacobian) {
   const auto checkpoint = VmecCheckpoint::JACOBIAN;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/vmecpp::HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
@@ -232,7 +232,7 @@ TEST_P(EnergiesTest, CheckEnergies) {
   const auto checkpoint = VmecCheckpoint::ENERGY;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/vmecpp::HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
@@ -290,7 +290,7 @@ TEST_P(InvariantForceResidualsTest, CheckInvariantForceResiduals) {
   const auto checkpoint = VmecCheckpoint::INVARIANT_RESIDUALS;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/vmecpp::HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);

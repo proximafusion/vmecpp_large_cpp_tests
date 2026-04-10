@@ -325,7 +325,10 @@ TEST_P(MultigridResultTest, CheckMultigridResult) {
 
   // run until convergence
   // TODO(jons): need to limit for first multi-grid step for now ...
-  bool reached_checkpoint = vmec.run(VmecCheckpoint::NONE, INT_MAX, 1).value();
+  bool reached_checkpoint =
+      vmec.run(VmecCheckpoint::NONE, INT_MAX, /*target_ns=*/0,
+               /*maximum_multi_grid_step=*/1)
+          .value();
   ASSERT_FALSE(reached_checkpoint);
 
   // Here, we implicitly test for correct number of iterations until convergence

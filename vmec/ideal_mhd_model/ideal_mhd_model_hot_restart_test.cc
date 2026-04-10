@@ -83,7 +83,7 @@ TEST_P(FourierGeometryToStartWithFromWOutTest,
   const auto checkpoint = VmecCheckpoint::FOURIER_GEOMETRY_TO_START_WITH;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*maximum_iterations=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
@@ -183,7 +183,7 @@ TEST_P(FourierGeometryToStartWithFromDebugOutTest,
   const auto checkpoint = VmecCheckpoint::FOURIER_GEOMETRY_TO_START_WITH;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*iterations_before_checkpointing=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
@@ -279,7 +279,7 @@ TEST_P(InverseFourierTransformGeometryTest,
   const auto checkpoint = VmecCheckpoint::INV_DFT_GEOMETRY;
   const absl::StatusOr<bool> checkpoint_reached =
       vmec.run(checkpoint, /*iterations_before_checkpointing=*/0,
-               /*maximum_multi_grid_step=*/500,
+               /*target_ns=*/0, /*maximum_multi_grid_step=*/500,
                /*initial_state=*/HotRestartState(output_quantities));
   ASSERT_TRUE(checkpoint_reached.ok());
   ASSERT_TRUE(*checkpoint_reached);
