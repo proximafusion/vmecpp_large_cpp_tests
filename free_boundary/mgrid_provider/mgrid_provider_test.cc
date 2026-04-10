@@ -209,9 +209,13 @@ TEST_P(LoadMGridTest, CheckLoadMGrid) {
   }      // index_phi
 }  // CheckLoadMGrid
 
-INSTANTIATE_TEST_SUITE_P(TestVmec, LoadMGridTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-12,
-                                           .coils_file = "coils.cth_like"}));
+INSTANTIATE_TEST_SUITE_P(
+    TestVmec, LoadMGridTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-12,
+                      .coils_file = "coils.solovev"},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-12,
+                      .coils_file = "coils.cth_like"}));
 
 }  // namespace vmecpp

@@ -150,9 +150,13 @@ TEST_P(ExternalMagneticFieldTest, CheckExternalMagneticField) {
 // NOTE: tolerance is a little more loose here, since Fortran VMEC still uses
 // the bsc_t old Biot-Savart module, whereas VMEC++ uses ABSCAB. (The mgrid file
 // can be computed using ABSCAB already via //makegrid/makegrid_standalone.)
-INSTANTIATE_TEST_SUITE_P(TestExternalMagneticField, ExternalMagneticFieldTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-10,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestExternalMagneticField, ExternalMagneticFieldTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-10,
+                      .iter2_to_test = {53, 54}}));
 
 }  // namespace vmecpp

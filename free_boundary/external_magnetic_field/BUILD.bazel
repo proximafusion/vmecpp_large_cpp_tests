@@ -5,7 +5,9 @@ cc_test(
     name = "external_magnetic_field_test",
     srcs = ["external_magnetic_field_test.cc"],
     data = [
+        "//vmecpp/test_data:solovev_free_bdy",
         "//vmecpp/test_data:cth_like_free_bdy",
+        "//vmecpp_large_cpp_tests/test_data:solovev_free_bdy",
         "//vmecpp_large_cpp_tests/test_data:cth_like_free_bdy",
     ],
     deps = [
