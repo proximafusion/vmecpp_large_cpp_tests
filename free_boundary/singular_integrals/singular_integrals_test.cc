@@ -98,10 +98,14 @@ TEST_P(CmnsTest, CheckCmns) {
   }
 }  // CheckCmns
 
-INSTANTIATE_TEST_SUITE_P(TestSingularIntegrals, CmnsTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-14,
-                                           .iter2_to_test = {53}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestSingularIntegrals, CmnsTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-14,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-14,
+                      .iter2_to_test = {53}}));
 
 class AnalytTest : public TestWithParam<DataSource> {
  protected:
@@ -247,9 +251,13 @@ TEST_P(AnalytTest, CheckAnalyt) {
   }
 }  // CheckAnalyt
 
-INSTANTIATE_TEST_SUITE_P(TestSingularIntegrals, AnalytTest,
-                         Values(DataSource{.identifier = "cth_like_free_bdy",
-                                           .tolerance = 1.0e-9,
-                                           .iter2_to_test = {53, 54}}));
+INSTANTIATE_TEST_SUITE_P(
+    TestSingularIntegrals, AnalytTest,
+    Values(DataSource{.identifier = "solovev_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {3}},
+           DataSource{.identifier = "cth_like_free_bdy",
+                      .tolerance = 1.0e-9,
+                      .iter2_to_test = {53, 54}}));
 
 }  // namespace vmecpp
