@@ -512,4 +512,5 @@ INSTANTIATE_TEST_SUITE_P(
     TestVmec, InterpTest,
     Values(DataSource{.identifier = "solovev", .tolerance = 1.0e-14},
            DataSource{.identifier = "solovev_no_axis", .tolerance = 1.0e-14},
+           DataSource{.identifier = "solovev_free_bdy", .tolerance = 1.0e-11},
            DataSource{.identifier = "cma", .tolerance = 5.0e-11}));
