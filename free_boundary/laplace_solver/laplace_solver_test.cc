@@ -154,7 +154,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, FourPTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -235,7 +235,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, FourISymmTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -334,7 +334,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, FourIAccumulateGrpmnTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -486,7 +486,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, FourIKvDftTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -602,7 +602,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, FourIKuDftTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -706,7 +706,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, SolverInputsTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));
@@ -767,7 +767,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestLaplaceSolver, LinearSolverTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-9,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-9,
                       .iter2_to_test = {53, 54}}));

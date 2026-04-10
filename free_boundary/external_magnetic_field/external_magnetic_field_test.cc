@@ -154,7 +154,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestExternalMagneticField, ExternalMagneticFieldTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-10,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-10,
                       .iter2_to_test = {53, 54}}));

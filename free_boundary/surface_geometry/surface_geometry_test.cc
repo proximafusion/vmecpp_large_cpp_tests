@@ -189,7 +189,7 @@ INSTANTIATE_TEST_SUITE_P(
     TestSurfaceGeometry, SurfaceGeometryTest,
     Values(DataSource{.identifier = "solovev_free_bdy",
                       .tolerance = 1.0e-12,
-                      .iter2_to_test = {3}},
+                      .iter2_to_test = {3, 4}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-12,
                       .iter2_to_test = {53, 54}}));
