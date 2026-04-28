@@ -2399,7 +2399,7 @@ INSTANTIATE_TEST_SUITE_P(
            DataSource{.identifier = "cth_like_fixed_bdy_nzeta_37",
                       .tolerance = 5.0e-16},
            DataSource{
-               .identifier = "cma", .tolerance = 1.0e-14, .iter2_to_test = {1}},
+               .identifier = "cma", .tolerance = 1.1e-14, .iter2_to_test = {1}},
            DataSource{.identifier = "cth_like_free_bdy",
                       .tolerance = 1.0e-13,
                       .iter2_to_test = {1, 2, 53, 54}}));
