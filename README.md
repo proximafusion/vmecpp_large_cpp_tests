@@ -1,7 +1,10 @@
 # VMEC++ large tests
 
-Suite of VMEC++ C++ tests that require large test files which we prefer not
+Suite of VMEC++ C++ tests that require large test files which originally preferred not
 to include in the [standalone VMEC++ repo](https://github.com/proximafusion/vmecpp).
+
+The tests have since [been merged into the `vmecpp` repo](https://github.com/proximafusion/vmecpp/pull/596
+), so this is no longer maintained. 
 
 In order to run these tests, clone them inside the VMEC++ repo:
 
